@@ -27,16 +27,30 @@
         </td>
         <td>
           <div class="btn-group">
-            <button class="btn btn-outline-primary btn-sm" @click="openModal(false,item)">編輯</button>
-            <button class="btn btn-outline-danger btn-sm">刪除</button>
+            <button
+              class="btn btn-outline-primary btn-sm"
+              @click="openModal(false, item)"
+            >
+              編輯
+            </button>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              @click="openDelModal(item)"
+            >
+              刪除
+            </button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <productModal ref="productModal" :product="tempProduct" @update-product="updateProduct"></productModal>
+  <productModal
+    ref="productModal"
+    :product="tempProduct"
+    @update-product="updateProduct"
+  ></productModal>
   <!-- :product 內層資料綁定外層資料 tempProduct，利用 emit前內後外，將資料從內層傳回外層 -->
-  <delModal ></delModal>
+  <delModal ref="delModal" :iten="tempProduct"></delModal>
 </template>
 <script>
 import productModal from "../components/ProductModal.vue";
@@ -59,7 +73,7 @@ export default {
     getProducts() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`;
       this.$http.get(api).then((res) => {
-        if (res.data.success) { 
+        if (res.data.success) {
           console.log("products", res.data);
           this.products = res.data.products;
           this.pagination = res.data.pagination;
@@ -68,7 +82,7 @@ export default {
     },
     openModal(isNew, item) {
       if (isNew){
-        this.tempProduct = {};        
+        this.tempProduct = {};
       }else{
         this.tempProduct = {...item};
         console.log('temp',this.tempProduct);
@@ -78,6 +92,7 @@ export default {
       const productComponent = this.$refs.productModal;
       productComponent.showModal();
     },
+    openDelProduct = {...item};
     updateProduct(item){
       this.tempProduct = item;
       // 新增
