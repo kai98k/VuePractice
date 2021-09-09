@@ -35,9 +35,12 @@
     </tbody>
   </table>
   <productModal ref="productModal" :product="tempProduct" @update-product="updateProduct"></productModal>
+  <!-- :product 內層資料綁定外層資料 tempProduct，利用 emit前內後外，將資料從內層傳回外層 -->
+  <delModal ></delModal>
 </template>
 <script>
 import productModal from "../components/ProductModal.vue";
+import delModal from "../components/DelModal.vue";
 
 export default {
   data() {
@@ -49,13 +52,14 @@ export default {
     };
   },
   components: {
+    delModal,
     productModal,
   },
   methods: {
     getProducts() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`;
       this.$http.get(api).then((res) => {
-        if (res.data.success) {
+        if (res.data.success) { 
           console.log("products", res.data);
           this.products = res.data.products;
           this.pagination = res.data.pagination;
@@ -76,9 +80,17 @@ export default {
     },
     updateProduct(item){
       this.tempProduct = item;
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
+      // 新增
+      let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
       const productComponent = this.$refs.productModal;
-      this.$http.post(api,{data:this.tempProduct}).
+      let httpMethod = 'post';
+
+      // 編輯
+      if(!this.isNew){
+        api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
+        httpMethod = 'put'
+      }
+      this.$http.[httpMethod](api,{data:this.tempProduct}).
       then((res)=>{
         console.log(res);
         productComponent.hideModal();

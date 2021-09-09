@@ -38,7 +38,7 @@
                   >或 上傳圖片
                   <i class="fas fa-spinner fa-spin"></i>
                 </label>
-                <input type="file" id="customFile" class="form-control" />
+                <input type="file" id="customFile" class="form-control" ref="fileInput" @change="uploadFile()"/>
               </div>
               <img class="img-fluid" alt="" />
               <!-- 延伸技巧，多圖 -->
@@ -99,7 +99,7 @@
                     type="number"
                     class="form-control"
                     id="origin_price"
-                    placeholder="請輸入原價" v-model="tempProduct.originPrice"
+                    placeholder="請輸入原價" v-model="tempProduct.origin_price"
                   />
                 </div>
                 <div class="mb-3 col-md-6">
@@ -140,6 +140,7 @@
                     :true-value="1"
                     :false-value="0"
                     id="is_enabled"
+                     v-model="tempProduct.is_enabled"
                   />
                   <label class="form-check-label" for="is_enabled">
                     是否啟用
@@ -184,6 +185,7 @@ export default {
   data() {
     return {
       modal: {},
+      // 利用 ref 操控 modal
       tempProduct: {},
     };
   },
@@ -193,6 +195,20 @@ export default {
     },
     hideModal() {
       this.modal.hide();
+    },
+    uploadFile(){
+      const uploadedFile = this.$refs.fileInput.files[0];
+      console.dir(uploadedFile);
+      const formData = new FormData();
+      formData.append('file-to-upload',uploadedFile);
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
+      this.$http.post(url,formData)
+        .then((response) => {
+          console.log(response.data);
+          if(response.data.sccess){
+            this.tempProduct.imageUrl = response.data.imageUrl;
+          }
+        });
     },
   },
   mounted() {
