@@ -50,7 +50,8 @@
     @update-product="updateProduct"
   ></productModal>
   <!-- :product 內層資料綁定外層資料 tempProduct，利用 emit前內後外，將資料從內層傳回外層 -->
-  <delModal ref="delModal" :iten="tempProduct"></delModal>
+  <delModal ref="delModal" :item="tempProduct"></delModal>
+  <!-- :item 內層資料綁定外層資料 tempProduct，一樣 call 外層進去渲染，ref 傳參考來使用內層 method -->
 </template>
 <script>
 import productModal from "../components/ProductModal.vue";
@@ -92,7 +93,11 @@ export default {
       const productComponent = this.$refs.productModal;
       productComponent.showModal();
     },
-    openDelProduct = {...item};
+    openDelProduct(item){
+      // v-for 傳 item 進來到
+      this.tempProduct={...item}
+
+    }
     updateProduct(item){
       this.tempProduct = item;
       // 新增
