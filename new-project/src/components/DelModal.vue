@@ -66,5 +66,8 @@ export default {
       this.modal.hide();
     },
   },
+  mounted() {
+    this.modal = new Modal(this.$refs.modal);
+  },
 };
 </script>

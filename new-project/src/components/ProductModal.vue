@@ -159,6 +159,7 @@
             取消
           </button>
           <button type="button" class="btn btn-primary" @click="$emit('update-product',tempProduct)">確認</button>
+          <!-- emit 也可以寫在 method 中 -->
         </div>
       </div>
     </div>
@@ -180,12 +181,13 @@ export default {
   watch:{
     product(){
         this.tempProduct = this.product;
+        // 單向數據流，資料傳到外層再做修改
     }
   },
   data() {
     return {
       modal: {},
-      // 利用 ref 操控 modal
+      // 變數拿來裝 ref 取到 modal DOM
       tempProduct: {},
     };
   },
@@ -212,7 +214,9 @@ export default {
     },
   },
   mounted() {
+    //  mounted 生命週期 created 完成後
     this.modal = new Modal(this.$refs.modal);
+    // 在 template 掛載 ref，完整生成 template 後，使用 $refs 取得 DOM 
   },
 };
 </script>

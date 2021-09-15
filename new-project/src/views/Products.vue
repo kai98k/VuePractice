@@ -1,4 +1,5 @@
 <template>
+<Loading :active="isLoading"></Loading>
   <div class="text-end">
     <button class="btn btn-primary" type="button" @click="openModal(true)">
       增加一個產品
@@ -37,6 +38,7 @@
               class="btn btn-outline-danger btn-sm"
               @click="openDelModal(item)"
             >
+            <!-- 將 item 傳進 modal 中 -->
               刪除
             </button>
           </div>
@@ -50,12 +52,13 @@
     @update-product="updateProduct"
   ></productModal>
   <!-- :product 內層資料綁定外層資料 tempProduct，利用 emit前內後外，將資料從內層傳回外層 -->
-  <delModal ref="delModal" :item="tempProduct"></delModal>
+  <delModal ref="delModal" :item="tempProduct" @del-item="delProduct"></delModal>
   <!-- :item 內層資料綁定外層資料 tempProduct，一樣 call 外層進去渲染，ref 傳參考來使用內層 method -->
 </template>
 <script>
 import productModal from "../components/ProductModal.vue";
 import delModal from "../components/DelModal.vue";
+
 
 export default {
   data() {
@@ -64,16 +67,20 @@ export default {
       pagination: {},
       tempProduct: {},
       isNew:false,
+      isLoading:false,
     };
   },
   components: {
     delModal,
     productModal,
   },
+  inject:['emitter'],
   methods: {
     getProducts() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`;
+      this.isLoading = true;
       this.$http.get(api).then((res) => {
+        this.isLoading = false;
         if (res.data.success) {
           console.log("products", res.data);
           this.products = res.data.products;
@@ -93,11 +100,22 @@ export default {
       const productComponent = this.$refs.productModal;
       productComponent.showModal();
     },
-    openDelProduct(item){
+    openDelModal(item){
       // v-for 傳 item 進來到
-      this.tempProduct={...item}
+      this.tempProduct={...item};
+      const delComponent = this.$refs.delModal;
+      delComponent.showModal();
 
-    }
+    },
+     delProduct() {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`;
+      this.$http.delete(url).then((response) => {
+        console.log(response.data);
+        const delComponent = this.$refs.delModal;
+        delComponent.hideModal();
+        this.getProducts();
+      });
+    },
     updateProduct(item){
       this.tempProduct = item;
       // 新增
@@ -115,6 +133,19 @@ export default {
         console.log(res);
         productComponent.hideModal();
         this.getProducts();
+                if (response.data.success) {
+          this.getProducts();
+          this.emitter.emit('push-message', {
+            style: 'success',
+            title: '更新成功',
+          });
+        } else {
+          this.emitter.emit('push-message', {
+            style: 'danger',
+            title: '更新失敗',
+            content: response.data.message.join('、'),
+          });
+        }
       });
     },
   },
