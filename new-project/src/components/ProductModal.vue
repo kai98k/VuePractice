@@ -99,7 +99,7 @@
                     type="number"
                     class="form-control"
                     id="origin_price"
-                    placeholder="請輸入原價" v-model="tempProduct.origin_price"
+                    placeholder="請輸入原價" v-model.number="tempProduct.origin_price"
                   />
                 </div>
                 <div class="mb-3 col-md-6">
@@ -108,7 +108,7 @@
                     type="number"
                     class="form-control"
                     id="price"
-                    placeholder="請輸入售價" v-model="tempProduct.price"
+                    placeholder="請輸入售價" v-model.number="tempProduct.price"
                   />
                 </div>
               </div>
@@ -188,7 +188,10 @@ export default {
     return {
       modal: {},
       // 變數拿來裝 ref 取到 modal DOM
-      tempProduct: {},
+      tempProduct: {
+        price:0,
+        origin_price:0,
+      },
     };
   },
   methods: {
@@ -201,6 +204,7 @@ export default {
     uploadFile(){
       const uploadedFile = this.$refs.fileInput.files[0];
       console.dir(uploadedFile);
+      console.log(this.tempProduct);
       const formData = new FormData();
       formData.append('file-to-upload',uploadedFile);
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;

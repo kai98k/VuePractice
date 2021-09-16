@@ -1,3 +1,4 @@
+
 <template>
   <div
     class="toast"
@@ -24,15 +25,14 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script>
 import Toast from "bootstrap/js/dist/toast";
 export default {
-  name: Toast,
+  name: "Toast",
   props: ["msg"],
   mounted() {
-    const ToastEl = this.$refs.toast;
-    const toast = new (toastEl,
-    {
+    const toastEl = this.$refs.toast;
+    const toast = new Toast(toastEl, {
       delay: 6000,
     });
     toast.show();
