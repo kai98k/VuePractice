@@ -1,5 +1,5 @@
 <template>
-<Loading :active="isLoading"></Loading>
+  <Loading :active="isLoading"></Loading>
   <div class="text-end">
     <button class="btn btn-primary" type="button" @click="openModal(true)">
       增加一個產品
@@ -20,8 +20,8 @@
       <tr v-for="item in products" :key="item.id">
         <td>{{ item.category }}</td>
         <td>{{ item.title }}</td>
-        <td class="text-right">{{ item.origin_price }}</td>
-        <td class="text-right">{{ item.price }}</td>
+        <td class="text-right">{{ $filters.currency(item.origin_price) }}</td>
+        <td class="text-right">{{ currency(item.price) }}</td>
         <td>
           <span class="text-success" v-if="item.is_enabled">啟用</span>
           <span class="text-muted" v-else>未啟用</span>
@@ -38,7 +38,7 @@
               class="btn btn-outline-danger btn-sm"
               @click="openDelModal(item)"
             >
-            <!-- 將 item 傳進 modal 中 -->
+              <!-- 將 item 傳進 modal 中 -->
               刪除
             </button>
           </div>
@@ -46,19 +46,25 @@
       </tr>
     </tbody>
   </table>
+  <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
   <productModal
     ref="productModal"
     :product="tempProduct"
     @update-product="updateProduct"
   ></productModal>
   <!-- :product 內層資料綁定外層資料 tempProduct，利用 emit前內後外，將資料從內層傳回外層 -->
-  <delModal ref="delModal" :item="tempProduct" @del-item="delProduct"></delModal>
+  <delModal
+    ref="delModal"
+    :item="tempProduct"
+    @del-item="delProduct"
+  ></delModal>
   <!-- :item 內層資料綁定外層資料 tempProduct，一樣 call 外層進去渲染，ref 傳參考來使用內層 method -->
 </template>
 <script>
 import productModal from "../components/ProductModal.vue";
 import delModal from "../components/DelModal.vue";
-
+import pagination from "../components/Pagination.vue";
+import {currency} from "../methods/filters.js";
 
 export default {
   data() {
@@ -66,18 +72,21 @@ export default {
       products: [],
       pagination: {},
       tempProduct: {},
-      isNew:false,
-      isLoading:false,
+      isNew: false,
+      isLoading: false,
     };
   },
   components: {
     delModal,
     productModal,
+    pagination,
   },
-  inject:['emitter'],
+  inject: ["emitter"],
   methods: {
-    getProducts() {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`;
+    currency,
+    getProducts(page = 1) {
+      console.log(page);
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`;
       this.isLoading = true;
       this.$http.get(api).then((res) => {
         this.isLoading = false;
@@ -89,25 +98,24 @@ export default {
       });
     },
     openModal(isNew, item) {
-      if (isNew){
+      if (isNew) {
         this.tempProduct = {};
-      }else{
-        this.tempProduct = {...item};
-        console.log('temp',this.tempProduct);
+      } else {
+        this.tempProduct = { ...item };
+        console.log("temp", this.tempProduct);
       }
       this.isNew = isNew;
-      console.log(isNew,item);
+      console.log(isNew, item);
       const productComponent = this.$refs.productModal;
       productComponent.showModal();
     },
-    openDelModal(item){
+    openDelModal(item) {
       // v-for 傳 item 進來到
-      this.tempProduct={...item};
+      this.tempProduct = { ...item };
       const delComponent = this.$refs.delModal;
       delComponent.showModal();
-
     },
-     delProduct() {
+    delProduct() {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`;
       this.$http.delete(url).then((response) => {
         console.log(response.data);
@@ -116,39 +124,39 @@ export default {
         this.getProducts();
       });
     },
-    updateProduct(item){
+    updateProduct(item) {
       this.tempProduct = item;
       // 新增
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
       const productComponent = this.$refs.productModal;
-      let httpMethod = 'post';
+      let httpMethod = "post";
 
       // 編輯
-      if(!this.isNew){
+      if (!this.isNew) {
         api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
-        httpMethod = 'put'
+        httpMethod = "put";
       }
-      this.$http.[httpMethod](api,{data:this.tempProduct}).
-      then((res)=>{
+      this.$http[httpMethod](api, { data: this.tempProduct }).then((res) => {
         console.log(res);
         productComponent.hideModal();
-        if(res.data.success){
+        if (res.data.success) {
           this.getProducts();
-          this.emitter.emit('push-message',{
-            style:'success',
-            title:'更新成功',
+          this.emitter.emit("push-message", {
+            style: "success",
+            title: "更新成功",
           });
-        } else{
-          this.emitter.emit('push-message',{
-            style:'danger',
-            title:'更新失敗',
-            content:res.data.message.join('、'),
+        } else {
+          this.emitter.emit("push-message", {
+            style: "danger",
+            title: "更新失敗",
+            content: res.data.message.join("、"),
           });
         }
       });
     },
   },
   created() {
+    console.log(currency(1000));
     this.getProducts();
   },
 };
