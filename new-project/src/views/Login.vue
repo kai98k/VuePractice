@@ -1,6 +1,7 @@
 <template>
   <div class="container mt-5">
     <form class="row justify-content-center" @submit.prevent="signIn">
+      <!-- 後綴prevent取消html預設事件 -->
       <div class="col-md-6">
         <h1 class="h3 mb-3 font-weight-normal">請先登入</h1>
         <div class="mb-2">
@@ -50,14 +51,19 @@ export default {
     signIn() {
       console.log("signIn");
       const api = `${process.env.VUE_APP_API}admin/signin`;
+      // submit驗證 登入api
       console.log(api);
       this.$http.post(api, this.user).then((res) => {
+        console.log(res,"res");
         if(res.data.success){
-          const {token,expired} = res.data
+        const {token,expired} = res.data
+        // 物件解構賦值 https://pjchender.blogspot.com/2017/01/es6-object-destructuring.html
         console.log(token,expired);
         document.cookie = `hexToken=${token};expires=${new Date(expired)}`
+        // mdn存取cookie方式，自訂義token名稱存value
         console.log(res);
         this.$router.push('/dashboard/products');
+        // 成功並換頁
         }
       });
     },

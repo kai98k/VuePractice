@@ -23,6 +23,7 @@ const routes = [
     path: '/Dashboard',
     component: () => import('../views/Dashboard.vue'),
     children: [
+      // 巢狀路由
       {
       path: 'products',
       component: () => import('../views/Products.vue'),

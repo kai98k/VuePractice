@@ -35,8 +35,9 @@ export default {
   methods: {
     logout() {
       const api = `${process.env.VUE_APP_API}logout`;
+      // 登出功能
       this.$http.post(api).then((res) => {
-        if (res.data.success) {
+        if (res.data.success) { 
           const { token, expired } = res.data;
           this.$router.push("/login");
         }
