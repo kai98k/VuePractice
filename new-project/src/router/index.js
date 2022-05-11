@@ -30,6 +30,10 @@ const routes = [
     },
     ],
   },
+  {
+    path:'/UserBoard',
+    component: ()=>import('../views/UserBoard.vue'),
+  },
 ]
 
 const router = createRouter({
