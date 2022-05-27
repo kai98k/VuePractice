@@ -1,11 +1,15 @@
 <template>
+  <navbar></navbar>
   <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
 </template>
 <script>
 import pagination from "../components/Pagination.vue";
 import {currency} from "../methods/filters.js";
+import Navbar from "../components/Navbar.vue"; //拆分元件
 
 export default {
+  components:{Navbar,
+  },
   data() {
     return {
       products:[],
@@ -17,6 +21,7 @@ export default {
   },
   components: {
     pagination,
+    Navbar,
   },
   methods: {
     currency,
