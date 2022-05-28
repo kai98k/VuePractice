@@ -2,7 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand text-center" href="#"
-        ><span class="h1">NEED</span><h5>你的雜貨專賣</h5></a
+        ><span class="h1">NEED</span>
+        <h5>你的雜貨專賣</h5></a
       >
       <button
         class="navbar-toggler"
@@ -32,13 +33,13 @@
   </nav>
 </template>
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
-.navbar-collapse{
+@import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
+.navbar-collapse {
   flex-grow: 0;
 }
-.h1{
+.h1 {
   font-size: 25px;
-  font-family: 'Rock Salt', cursive;
+  font-family: "Rock Salt", cursive;
 }
 </style>
 <script>

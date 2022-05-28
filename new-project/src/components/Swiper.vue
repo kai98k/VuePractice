@@ -1,30 +1,42 @@
 <template>
-  <swiper :modules="modules" :pagination="{ clickable: true }">
+  <swiper
+    :slides-per-view="3"
+    :space-between="50"
+    @swiper="onSwiper"
+    @slideChange="onSlideChange"
+  >
     <swiper-slide>Slide 1</swiper-slide>
     <swiper-slide>Slide 2</swiper-slide>
     <swiper-slide>Slide 3</swiper-slide>
+    ...
   </swiper>
 </template>
-
 <style lang="scss" scoped>
-  @import 'swiper/swiper.scss';
-
+@import "";
 </style>
-
 <script>
-import { Swiper, SwiperSlide } from "swiper/vue/swiper-vue";
+  // Import Swiper Vue.js components
+  import { Swiper, SwiperSlide } from 'swiper/vue';
 
-  // import swiper module styles
+  // Import Swiper styles
+  import 'swiper/css';
 
   export default {
     components: {
       Swiper,
-      SwiperSlide
+      SwiperSlide,
     },
     setup() {
+      const onSwiper = (swiper) => {
+        console.log(swiper);
+      };
+      const onSlideChange = () => {
+        console.log('slide change');
+      };
       return {
-        modules: [Pagination]
-      }
-    }
-  }
+        onSwiper,
+        onSlideChange,
+      };
+    },
+  };
 </script>
