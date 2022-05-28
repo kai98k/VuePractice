@@ -1,6 +1,7 @@
 <template>
   <Loading :active="isLoading"></Loading>
-  <div class="text-end">
+  <div class="d-flex justify-content-between">
+    <h2>後台管理頁</h2>
     <button class="btn btn-primary" type="button" @click="openModal(true)">
       增加一個產品
     </button>

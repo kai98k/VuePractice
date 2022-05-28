@@ -1,11 +1,13 @@
 <template>
-  <navbar></navbar>
-  <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
+  <Navbar></Navbar>
+  <Swiper></Swiper>
+  <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination>
 </template>
 <script>
-import pagination from "../components/Pagination.vue";
+import Pagination from "../components/Pagination.vue";
 import {currency} from "../methods/filters.js";
 import Navbar from "../components/Navbar.vue"; //拆分元件
+import Swiper from '../components/Swiper.vue';
 
 export default {
   components:{Navbar,
@@ -17,11 +19,11 @@ export default {
       pagination: {},
     //   尚未emit
     };
-    
   },
   components: {
-    pagination,
+    Pagination,
     Navbar,
+    Swiper,
   },
   methods: {
     currency,
