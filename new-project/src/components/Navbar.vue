@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
     <div class="container-fluid">
       <a class="navbar-brand text-center" href="#"
         ><span class="h1">NEED</span>
@@ -34,6 +34,10 @@
 </template>
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
+nav{
+  position: fixed;
+  z-index: 50;
+}
 .navbar-collapse {
   flex-grow: 0;
 }

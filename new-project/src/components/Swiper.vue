@@ -1,19 +1,16 @@
 <template>
-<swiper
-:slides-per-view="4"
-:space-between="30"
-@swiper="onSwiper"
-@slideChange="onSlideChange"
-class="default-slider">
-<swiper-slide v-for="n in 7" :key="n"> {{ n }} </swiper-slide></swiper>
+  <swiper :slides-per-view="1" :navigation="true">
+    <swiper-slide v-for="n in 7" :key="n"> {{ n }} </swiper-slide>
+  </swiper>
 </template>
+
 <style scoped>
-.default-slider .swiper-slide {
+.swiper-slide {
   display: flex;
-  height: 300px !important;
+  height: 100vh;
   justify-content: center;
   align-items: center;
-  color: #000;
+
   font-size: 24px;
   font-weight: 700;
 }
@@ -40,29 +37,18 @@ class="default-slider">
 }
 </style>
 <script>
-
-// https://blog.canopas.com/implement-different-types-of-sliders-using-vue-3-and-swiper-7-ab79bd5abe28
-
+// Import Swiper Vue.js components
 import { Swiper } from "swiper/vue/swiper";
 import { SwiperSlide } from "swiper/vue/swiper-slide";
+import SwiperCore, { Navigation } from "swiper";
+// Import Swiper styles
 import "swiper/swiper.min.css";
-
-  export default {
-    components: {
-      Swiper,
-      SwiperSlide,
-    },
-    setup() {
-      const onSwiper = (swiper) => {
-        console.log(swiper);
-      };
-      const onSlideChange = () => {
-        console.log('slide change');
-      };
-      return {
-        onSwiper,
-        onSlideChange,
-      };
-    },
-  };
+import "swiper/modules/navigation/navigation.min.css";
+SwiperCore.use([Navigation]);
+export default {
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+};
 </script>
