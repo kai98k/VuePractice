@@ -1,5 +1,5 @@
 <template>
-  <nav aria-label="Page navigation example">
+  <div aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li class="page-item" :class="{ disabled: !pages.has_pre }">
         <a
@@ -32,7 +32,7 @@
         </a>
       </li>
     </ul>
-  </nav>
+  </div>
 </template>
 
 <script>

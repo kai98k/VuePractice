@@ -1,12 +1,11 @@
 <template>
   <Loading :active="isLoading"></Loading>
-  <div class="d-flex justify-content-between">
-    <h2>後台管理頁</h2>
-    <button class="btn btn-primary" type="button" @click="openModal(true)">
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-primary mx-5" type="button" @click="openModal(true)">
       增加一個產品
     </button>
   </div>
-  <table class="table mt-4">
+  <table class="table mt-4 table-hover">
     <thead>
       <tr>
         <th width="120">分類</th>
@@ -130,13 +129,14 @@ export default {
       // 新增
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
       const productComponent = this.$refs.productModal;
-      let httpMethod = "post";
+      let httpMethod = "post"; //如果是新產品就用post
 
       // 編輯
       if (!this.isNew) {
         api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
         httpMethod = "put";
       }
+      //axios 搭配變數使用方法
       this.$http[httpMethod](api, { data: this.tempProduct }).then((res) => {
         console.log(res);
         productComponent.hideModal();

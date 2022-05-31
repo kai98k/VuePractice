@@ -1,10 +1,18 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
-    <div class="container-fluid">
-      <a class="navbar-brand text-center" href="#"
+  <nav
+    class="
+      navbar navbar-expand-lg navbar-light
+      bg-light
+      container-fluid
+      pb-0
+      pt-2
+    "
+  >
+    <div class="container">
+      <router-link to="/UserBoard" class="navbar-brand text-center" href="#"
         ><span class="h1">NEED</span>
-        <h5>你的雜貨專賣</h5></a
-      >
+        <h5 class="mb-0 mt-2">你的雜貨專賣</h5>
+      </router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -19,10 +27,16 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="#">商品管理</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#">文章管理</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">訂單管理</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">優惠券管理</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="logout">登出</a>
@@ -34,9 +48,10 @@
 </template>
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
-nav{
+nav {
   position: fixed;
   z-index: 50;
+  top: 0;
 }
 .navbar-collapse {
   flex-grow: 0;

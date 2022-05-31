@@ -1,7 +1,6 @@
 <template>
   <Navbar></Navbar>
   <Swiper></Swiper>
-  <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination>
 </template>
 <script>
 import Pagination from "../components/Pagination.vue";
@@ -16,7 +15,6 @@ export default {
     return {
       products:[],
       isLoading:false,
-      pagination: {},
     //   尚未emit
     };
   },

@@ -25,12 +25,13 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="mb-3">
-                <label for="image" class="form-label">輸入圖片網址</label>
+                <label for="image" class="form-label">輸入主圖網址</label>
                 <input
                   type="text"
                   class="form-control"
                   id="image"
                   placeholder="請輸入圖片連結"
+                  v-model="tempProduct.imageUrl"
                 />
               </div>
               <div class="mb-3">
