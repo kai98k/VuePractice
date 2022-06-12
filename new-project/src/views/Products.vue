@@ -29,15 +29,18 @@
         <td>
           <div class="btn-group">
             <button
-              class="btn btn-outline-primary btn-sm"
+              class="btn btn-secondary btn-sm"
               @click="openModal(false, item)"
             >
+            <i class="bi bi-pencil-square"></i>
+
               編輯
             </button>
             <button
-              class="btn btn-outline-danger btn-sm"
+              class="btn btn-danger btn-sm"
               @click="openDelModal(item)"
             >
+<i class="bi bi-trash3-fill"></i>
               <!-- 將 item 傳進 modal 中 -->
               刪除
             </button>
@@ -60,6 +63,11 @@
   ></delModal>
   <!-- :item 內層資料綁定外層資料 tempProduct，一樣 call 外層進去渲染，ref 傳參考來使用內層 method -->
 </template>
+<style scoped lang="scss">
+table{
+  box-shadow:3px 3px 10px black;
+}
+</style>
 <script>
 import productModal from "../components/ProductModal.vue";
 import delModal from "../components/DelModal.vue";
@@ -102,7 +110,6 @@ export default {
         this.tempProduct = {};
       } else {
         this.tempProduct = { ...item };
-        console.log("temp", this.tempProduct);
       }
       this.isNew = isNew;
       console.log(isNew, item);

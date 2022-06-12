@@ -1,64 +1,78 @@
 <template>
-  <nav
-    class="
-      navbar navbar-expand-lg navbar-light
-      bg-light
-      container-fluid
-      pb-0
-      pt-2
-    "
+  <div
+    class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark backBar"
+    style="width: 280px"
   >
-    <div class="container">
-      <router-link to="/UserBoard" class="navbar-brand text-center" href="#"
-        ><span class="h1">NEED</span>
-        <h5 class="mb-0 mt-2">你的雜貨專賣</h5>
-      </router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarText"
-        aria-controls="navbarText"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+    <a
+      href="/"
+      class="
+        d-flex
+        align-items-center
+        mb-3 mb-md-0
+        me-md-auto
+        text-white text-decoration-none
+      "
+    >
+      brandA
+    </a>
+    <hr />
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <router-link to="/dashboard/products" href="#" class="nav-link d-flex">
+          <i class="bi bi-shop"></i>
+          <h5 class="mx-2">商品管理</h5>
+        </router-link>
+      </li>
+      <li class="nav-item">
+        <a  href="#" class="nav-link d-flex">
+          <i class="bi bi-calculator"></i>
+
+          <h5 class="mx-2">訂單管理</h5>
+        </a>
+      </li>
+      <li>
+        <router-link to="/dashboard/article" href="#" class="nav-link d-flex">
+          <i class="bi bi-file-text"></i>
+          <h5 class="mx-2">文章管理</h5>
+        </router-link>
+      </li>
+      <li>
+        <a href="#" class="nav-link d-flex">
+          <i class="bi bi-ticket-perforated"></i>
+          <h5 class="mx-2">優惠券管理</h5>
+        </a>
+      </li>
+    </ul>
+    <h4>Dashboard</h4>
+    <hr />
+    <div class="admin d-flex">
+      <a
+        href="#"
+        class="d-flex align-items-center text-white text-decoration-none"
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">商品管理</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">文章管理</a>
-          </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#">訂單管理</a>
-          </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#">優惠券管理</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click.prevent="logout">登出</a>
-          </li>
-        </ul>
-      </div>
+        <img
+          src="https://github.com/mdo.png"
+          alt=""
+          width="32"
+          height="32"
+          class="rounded-circle me-2"
+        />
+        <strong>admin_test</strong>
+      </a>
+      <a class="nav-link" href="#" @click.prevent="logout">登出</a>
     </div>
-  </nav>
+  </div>
 </template>
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
-nav {
-  position: fixed;
-  z-index: 50;
-  top: 0;
+.backBar {
+  height: 100vh;
+  left: 0;
 }
-.navbar-collapse {
-  flex-grow: 0;
-}
-.h1 {
-  font-size: 25px;
-  font-family: "Rock Salt", cursive;
+
+.router-link-active{
+  color: #fff;
+    background-color: #D9AA71;
 }
 </style>
 <script>

@@ -1,17 +1,17 @@
 <template>
- <Navbar></Navbar>
-  <div class="container mt-0 position-relative">
-   
-    <div class="board">
-      <ToastMessages></ToastMessages>
-      <router-view />
-    </div>
+<div class="container-fluid d-flex backMain p-0">
+  <Navbar></Navbar>
+  <div class="container mt-5">  
+    <router-view />
   </div>
+
+</div>
+<ToastMessages></ToastMessages>
 </template>
 <style scoped lang="scss">
-  .board{
-    margin-top:100px;
-  }
+.backMain{
+position: relative;
+}
 </style>
 <script>
 import emitter from "@/methods/emitter"; //https://israynotarray.com/vue/20190510/86469050/ @路徑位置
