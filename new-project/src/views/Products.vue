@@ -49,7 +49,8 @@
       </tr>
     </tbody>
   </table>
-  <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
+  <page :pages="pagination"  @emit-pages="getProducts"></page>
+  <!-- <pagination :pages="pagination" @emit-pages="getProducts"></pagination> -->
   <productModal
     ref="productModal"
     :product="tempProduct"
@@ -71,8 +72,9 @@ table{
 <script>
 import productModal from "../components/ProductModal.vue";
 import delModal from "../components/DelModal.vue";
-import pagination from "../components/Pagination.vue";
+// import pagination from "../components/Pagination.vue";
 import {currency} from "../methods/filters.js";
+import Page from '../components/page.vue';
 
 export default {
   data() {
@@ -87,7 +89,8 @@ export default {
   components: {
     delModal,
     productModal,
-    pagination,
+    Page,
+    // pagination,
   },
   inject: ["emitter"],
   methods: {

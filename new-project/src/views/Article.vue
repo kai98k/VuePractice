@@ -1,70 +1,78 @@
 <template>
-  <button class="btn btn-primary mx-5" type="button" @click="openModal(true)">
-    新增文章
-  </button>
-  <Loading :active="isLoading"></Loading>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col" width="200">建立時間</th>
-        <th scope="col" width="200">標題</th>
-        <th scope="col" width="300">描述</th>
-        <th scope="col">標籤</th>
-        <th scope="col">是否發布</th>
-        <th scope="col">作者</th>
-      </tr>
-    </thead>
-    <tbody class="table-group-divider">
-      <tr v-for="item in articles" :key="item.id">
-        <td>{{ date(item.create_at) }}</td>
-        <td>{{ item.title }}</td>
-        <td>{{ item.description }}</td>
-        <td v-for="(tag, index) in item.tag" :key="index">
-          <span>{{ tag }}</span>
-        </td>
-        <td>
-          <span class="text-success" v-if="item.isPublic">已發布</span>
-          <span class="text-danger" v-else>未發布</span>
-        </td>
-        <td>{{ item.author }}</td>
-        <td>
-          <div class="btn-group">
-            <button
-              class="btn btn-secondary btn-sm"
-              @click="openModal(false, item)"
-            >
-              <i class="bi bi-pencil-square"></i>
+  <div>
+    <button class="btn btn-primary mx-5" type="button" @click="openModal(true)">
+      新增文章
+    </button>
+    <Loading :active="isLoading"></Loading>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" width="200">建立時間</th>
+          <th scope="col" width="200">標題</th>
+          <th scope="col" width="300">描述</th>
+          <th scope="col">標籤</th>
+          <th scope="col">是否發布</th>
+          <th scope="col">作者</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr v-for="item in articles" :key="item.id">
+          <td>{{ date(item.create_at) }}</td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.description }}</td>
+          <td v-for="(tag, index) in item.tag" :key="index">
+            <span>{{ tag }}</span>
+          </td>
+          <td>
+            <span class="text-success" v-if="item.isPublic">已發布</span>
+            <span class="text-danger" v-else>未發布</span>
+          </td>
+          <td>{{ item.author }}</td>
+          <td>
+            <div class="btn-group">
+              <button
+                class="btn btn-secondary btn-sm"
+                @click="openModal(false, item)"
+              >
+                <i class="bi bi-pencil-square"></i>
 
-              編輯
-            </button>
-            <button class="btn btn-danger btn-sm" @click="openDelModal(item)">
-              <i class="bi bi-trash3-fill"></i>
-              刪除
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <pagination :pages="pagination" @emit-pages="getArticles"></pagination>
-  <articleModal
-    ref="articleModal"
-    :article="tempArticle"
-    @update-article="updateArticle"
-  ></articleModal>
-  <delModal
-    ref="delModal"
-    :item="tempArticle"
-    @del-item="delArticle"
-  ></delModal>
-  <!-- 前內後外，刪除外層的 tempArticle -->
+                編輯
+              </button>
+              <button class="btn btn-danger btn-sm" @click="openDelModal(item)">
+                <i class="bi bi-trash3-fill"></i>
+                刪除
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <pagination :pages="paginations" @emit-pages="getArticles"></pagination> -->
+    <page :pages="pagination" @emit-pages="getArticles"></page>
+    <!-- <pagination :pages="paginations" @emit-pages="getArticles"></pagination>
+    <articleModal
+      ref="articleModal"
+      :article="tempArticle"
+      @update-article="updateArticle"
+    ></articleModal>
+    <delModal
+      ref="delModal"
+      :item="tempArticle"
+      @del-item="delArticle"
+    ></delModal> -->
+    <!-- 前內後外，刪除外層的 tempArticle -->
+        <!-- <articleModal
+      ref="articleModal"
+      :article="tempArticle"
+      @update-article="updateArticle"
+    ></articleModal> -->
+  </div>
 </template>
 
 <script>
-import articleModal from "../components/ArticleModal.vue";
-import delModal from "../components/DelModal.vue";
-import pagination from "../components/Pagination.vue";
-import { date } from "../methods/filters.js";
+import page from "../components/page.vue";
+import  {date}  from "../methods/filters.js";
+// import pagination from "../components/Pagination.vue";
 
 export default {
   data() {
@@ -77,9 +85,11 @@ export default {
     };
   },
   component: {
-    articleModal,
-    delModal,
-    pagination,
+    page,
+    // articleModal,
+    // articleModal:require("../components/ArticleModal.vue").default,
+    // delModal:require("../components/DelModal.vue").default,
+    // pagination:require("../components/Pagination.vue").default,
   },
   inject: ["emitter"],
   methods: {
