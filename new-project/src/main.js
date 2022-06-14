@@ -10,7 +10,6 @@ import { currency } from './methods/filters';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import pagination from './components/Pagination.vue'
 
 /* add icons to the library */
 
@@ -23,5 +22,5 @@ app.config.globalProperties.$filters = {
 app.use(VueAxios, axios);
 app.use(router);
 app.component('Loading',Loading);
-app.component('pagination',pagination);
+
 app.mount('#app');

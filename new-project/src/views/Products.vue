@@ -2,7 +2,7 @@
   <Loading :active="isLoading"></Loading>
   <div class="d-flex justify-content-end">
     <button class="btn btn-primary mx-5" type="button" @click="openModal(true)">
-      增加一個產品
+      新增產品
     </button>
   </div>
   <table class="table mt-4 table-hover">
@@ -24,7 +24,7 @@
         <td class="text-right">{{ currency(item.price) }}</td>
         <td>
           <span class="text-success" v-if="item.is_enabled">啟用</span>
-          <span class="text-muted" v-else>未啟用</span>
+          <span class="text-danger" v-else>未啟用</span>
         </td>
         <td>
           <div class="btn-group">

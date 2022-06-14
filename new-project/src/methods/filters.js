@@ -6,6 +6,6 @@ export function currency(num) {
 
 
   export function date(time) {
-    const localDate = new Date(time * 1000);
-    return localDate.toLocaleDateString();
+    const localDate = new Date(time);
+    return localDate.toLocaleString();
   }

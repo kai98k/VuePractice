@@ -18,6 +18,7 @@ import emitter from "@/methods/emitter"; //https://israynotarray.com/vue/2019051
 import ToastMessages from "@/components/ToastMessages.vue";
 import Navbar from "../components/Navbar.vue"; //拆分元件
 
+
 export default {
   components: {
     //區域註冊

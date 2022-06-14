@@ -12,10 +12,10 @@
       <div class="modal-content border-0">
         <div class="modal-header bg-secondary text-white">
           <h5 class="modal-title" id="exampleModalLabel">
-            <span>新增產品</span>
+            <span>新增文章</span>
           </h5>
           <button
-            type="button" 
+            type="button"
             class="btn-close btn-danger"
             data-bs-dismiss="modal"
             aria-label="Close"
@@ -25,13 +25,13 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="mb-3">
-                <label for="imageMain" class="form-label">輸入主圖網址</label>
+                <label for="articleTime" class="form-label">文章建立時間</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="imageMain"
-                  placeholder="請輸入圖片連結"
+                  id="articleTime"
                   v-model="tempProduct.imageUrl"
+                  readonly
                 />
               </div>
               <div class="mb-3">
@@ -137,61 +137,17 @@
                     :true-value="1"
                     :false-value="0"
                     id="is_enabled"
-                    v-model="tempProduct.is_enabled"
+                    v-model="tempArticle.isPublic"
                   />
                   <label class="form-check-label" for="is_enabled">
-                    是否啟用
+                    是否公開
                   </label>
                 </div>
               </div>
             </div>
           </div>
           <div class="d-flex flex-wrap">
-            <div
-              v-for="(image, key) in tempProduct.imagesUrl"
-              :key="key"
-              class="col-4"
-            >
-              <label :for="'url' + key" class="form-label"
-                >輸入副圖{{ key + 1 }}網址</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                :id="key"
-                placeholder="請輸入圖片連結"
-                v-model="tempProduct.imagesUrl[key]"
-              />
-              <label :for="'file' + key" class="form-label"
-                >或 上傳圖片
-                <i class="fas fa-spinner fa-spin"></i>
-              </label>
-              <input
-                type="file"
-                :id="'file' + key"
-                class="form-control"
-                ref="file"
-                @change="uploadFile(key)"
-              />
-                        
-              <img :src="image" class="img-fluid" />
-              <button
-                type="button"
-                class="btn btn-outline-danger"
-                @click="tempProduct.imagesUrl.splice(key, 1)"
-              >
-                移除
-              </button>
-            </div>
-            <div v-if="tempProduct.imagesUrl">
-              <button
-                v-if="tempProduct.imagesUrl.length !== 5"
-                class="btn btn-secondary btn-sm d-block w-100"
-                @click="tempProduct.imagesUrl.push('')"
-              >
-                新增副圖圖片
-              </button>
-            </div>
+       
           </div>
         </div>
         <div class="modal-footer">
@@ -201,7 +157,7 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="$emit('update-product', tempProduct)"
+            @click="$emit('update-article', tempArticle)"
           >
           <!-- emit 將內層資料向外傳遞 -->
             確認
@@ -218,7 +174,7 @@ import Modal from "bootstrap/js/dist/modal";
 
 export default {
   props: {
-    product: {
+    article: {
       type: Object,
       default() {
         return {};
@@ -226,20 +182,23 @@ export default {
     },
   },
   watch: {
-    product() {
-      this.tempProduct = this.product;
-      // 觸發props，外層向內層注入資料，因為單向數據流，不可以直接修改外層資料
-      console.log(this.tempProduct.imagesUrl);
-      if (this.tempProduct.imagesUrl == undefined || null) {
-        this.tempProduct.imagesUrl = [];
+    article() {
+      this.tempArticle = this.article;
+      if(this.tempArticle.create_at == undefined || null||NaN) {
+        this.tempArticle.create_at = Date.now();
       }
+      // 觸發props，外層向內層注入資料，因為單向數據流，不可以直接修改外層資料
+    //   console.log(this.tempProduct.imagesUrl);
+    //   if (this.tempProduct.imagesUrl == undefined || null) {
+    //     this.tempProduct.imagesUrl = [];
+    //   }
     },
   },
   data() {
     return {
       modal: {},
       // 變數拿來裝 ref 取到 modal DOM
-      tempProduct: {},
+      tempArticle: {},
     };
   },
   methods: {
@@ -249,32 +208,32 @@ export default {
     hideModal() {
       this.modal.hide();
     },
-    uploadFile(key) {
-      let uploadedFile;
-      console.log(key);
-      if (key == undefined) {
-        uploadedFile = this.$refs.fileInput.files[0];
-        //利用 key 傳進來做判斷是主圖還是附圖
-      } else {
-        uploadedFile = this.$refs.file[key].files[0];
-        //利用 ref 取得 NODELIST 回來
-      }
-      console.dir(uploadedFile);
-      console.log(this.tempProduct);
-      const formData = new FormData(); //post 方法
-      formData.append("file-to-upload", uploadedFile);
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
-      this.$http.post(url, formData).then((response) => {
-        console.log(response.data);
-        if (response.data.success) {
-          if (key == undefined)
-            this.tempProduct.imageUrl = response.data.imageUrl;
-          else {
-            this.tempProduct.imagesUrl[key] = response.data.imageUrl;
-          }
-        }
-      });
-    },
+    // uploadFile(key) {
+    //   let uploadedFile;
+    //   console.log(key);
+    //   if (key == undefined) {
+    //     uploadedFile = this.$refs.fileInput.files[0];
+    //     //利用 key 傳進來做判斷是主圖還是附圖
+    //   } else {
+    //     uploadedFile = this.$refs.file[key].files[0];
+    //     //利用 ref 取得 NODELIST 回來
+    //   }
+    //   console.dir(uploadedFile);
+    //   console.log(this.tempProduct);
+    //   const formData = new FormData(); //post 方法
+    //   formData.append("file-to-upload", uploadedFile);
+    //   const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
+    //   this.$http.post(url, formData).then((response) => {
+    //     console.log(response.data);
+    //     if (response.data.success) {
+    //       if (key == undefined)
+    //         this.tempProduct.imageUrl = response.data.imageUrl;
+    //       else {
+    //         this.tempProduct.imagesUrl[key] = response.data.imageUrl;
+    //       }
+    //     }
+    //   });
+    // },
   },
   mounted() {
     //  mounted 生命週期 created 完成後
