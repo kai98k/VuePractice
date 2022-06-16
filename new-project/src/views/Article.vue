@@ -47,9 +47,7 @@
         </tr>
       </tbody>
     </table>
-    <!-- <pagination :pages="paginations" @emit-pages="getArticles"></pagination> -->
-    <page :pages="pagination" @emit-pages="getArticles"></page>
-    <!-- <pagination :pages="paginations" @emit-pages="getArticles"></pagination>
+    <pagination :pages="paginations" @emit-pages="getArticles"></pagination>
     <articleModal
       ref="articleModal"
       :article="tempArticle"
@@ -59,37 +57,31 @@
       ref="delModal"
       :item="tempArticle"
       @del-item="delArticle"
-    ></delModal> -->
-    <!-- 前內後外，刪除外層的 tempArticle -->
-        <!-- <articleModal
-      ref="articleModal"
-      :article="tempArticle"
-      @update-article="updateArticle"
-    ></articleModal> -->
+    ></delModal>
   </div>
 </template>
 
 <script>
-import page from "../components/page.vue";
+// import page from "../components/page.vue";
 import  {date}  from "../methods/filters.js";
-// import pagination from "../components/Pagination.vue";
+import articleModal from "../components/ArticleModal.vue"
+import delModal from '../components/DelModal.vue';
+import pagination from "../components/Pagination.vue";
 
 export default {
   data() {
     return {
       articles: [],
-      pagination: {},
+      paginations: {},
       tempArticle: {},
       isNew: false,
       isLoading: false,
     };
   },
-  component: {
-    page,
-    // articleModal,
-    // articleModal:require("../components/ArticleModal.vue").default,
-    // delModal:require("../components/DelModal.vue").default,
-    // pagination:require("../components/Pagination.vue").default,
+  components: {
+    articleModal,
+    delModal,
+    pagination
   },
   inject: ["emitter"],
   methods: {
