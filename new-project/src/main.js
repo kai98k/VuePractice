@@ -7,7 +7,7 @@ import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 import App from './App.vue'
 import router from './router'
 import { currency } from './methods/filters';
-
+import VueTags from "vue-tags";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
@@ -22,5 +22,5 @@ app.config.globalProperties.$filters = {
 app.use(VueAxios, axios);
 app.use(router);
 app.component('Loading',Loading);
-
+app.component('VueTags',VueTags);
 app.mount('#app');

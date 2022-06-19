@@ -60,6 +60,7 @@ export default {
   },
   methods: {
     showModal() {
+      console.log(this.item,"item");
       this.modal.show();
     },
     hideModal() {

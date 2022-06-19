@@ -8,9 +8,8 @@
       <thead>
         <tr>
           <th scope="col" width="200">建立時間</th>
-          <th scope="col" width="200">標題</th>
-          <th scope="col" width="300">描述</th>
-          <th scope="col">標籤</th>
+          <th scope="col" width="300">標題</th>
+          <th scope="col" width="300">標籤</th>
           <th scope="col">是否發布</th>
           <th scope="col">作者</th>
         </tr>
@@ -19,9 +18,8 @@
         <tr v-for="item in articles" :key="item.id">
           <td>{{ date(item.create_at) }}</td>
           <td>{{ item.title }}</td>
-          <td>{{ item.description }}</td>
-          <td v-for="(tag, index) in item.tag" :key="index">
-            <span>{{ tag }}</span>
+          <td>
+            <span v-for="(tagItem, index) in item.tag" :key="index">{{ tagItem }}</span>
           </td>
           <td>
             <span class="text-success" v-if="item.isPublic">已發布</span>
@@ -115,7 +113,8 @@ export default {
     },
     openDelModal(item) {
       // v-for 傳 item 進來到
-      this.tempProduct = { ...item };
+      this.tempArticle = { ...item };
+      console.log(this.tempArticle,"item");
       const delComponent = this.$refs.delModal;
       delComponent.showModal();
     },
@@ -132,7 +131,7 @@ export default {
       this.tempArticle = item;
       // 新增
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/article`;
-      const articleComponent = this.$refs.productModal;
+      const articleComponent = this.$refs.articleModal;
       let httpMethod = "post"; //如果是新產品就用post
 
       // 編輯
