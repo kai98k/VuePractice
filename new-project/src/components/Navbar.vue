@@ -18,7 +18,7 @@
     <hr />
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <router-link to="/dashboard/products" href="#" class="nav-link d-flex">
+        <router-link to="/dashboard/products"  class="nav-link d-flex">
           <i class="bi bi-shop"></i>
           <h5 class="mx-2">商品管理</h5>
         </router-link>
@@ -31,16 +31,16 @@
         </a>
       </li>
       <li>
-        <router-link to="/dashboard/article" href="#" class="nav-link d-flex">
+        <router-link to="/dashboard/articles"  class="nav-link d-flex">
           <i class="bi bi-file-text"></i>
           <h5 class="mx-2">文章管理</h5>
         </router-link>
       </li>
       <li>
-        <a href="#" class="nav-link d-flex">
+        <router-link to="/dashboard/coupons" class="nav-link d-flex">
           <i class="bi bi-ticket-perforated"></i>
           <h5 class="mx-2">優惠券管理</h5>
-        </a>
+        </router-link>
       </li>
     </ul>
     <h4>Dashboard</h4>

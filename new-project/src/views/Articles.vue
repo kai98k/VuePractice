@@ -1,10 +1,17 @@
 <template>
   <div>
-    <button class="btn btn-primary mx-5" type="button" @click="openModal(true)">
-      新增文章
-    </button>
+    <div class="d-flex justify-content-end">
+      <button
+        class="btn btn-primary mx-5"
+        type="button"
+        @click="openModal(true)"
+      >
+        新增文章
+      </button>
+    </div>
+
     <Loading :active="isLoading"></Loading>
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col" width="200">建立時間</th>
@@ -19,7 +26,9 @@
           <td>{{ date(item.create_at) }}</td>
           <td>{{ item.title }}</td>
           <td>
-            <span v-for="(tagItem, index) in item.tag" :key="index">{{ tagItem }}</span>
+            <span v-for="(tagItem, index) in item.tag" :key="index">{{
+              tagItem
+            }}</span>
           </td>
           <td>
             <span class="text-success" v-if="item.isPublic">已發布</span>
@@ -61,9 +70,9 @@
 
 <script>
 // import page from "../components/page.vue";
-import  {date}  from "../methods/filters.js";
-import articleModal from "../components/ArticleModal.vue"
-import delModal from '../components/DelModal.vue';
+import { date } from "../methods/filters.js";
+import articleModal from "../components/ArticleModal.vue";
+import delModal from "../components/DelModal.vue";
 import pagination from "../components/Pagination.vue";
 
 export default {
@@ -79,13 +88,12 @@ export default {
   components: {
     articleModal,
     delModal,
-    pagination
+    pagination,
   },
   inject: ["emitter"],
   methods: {
     date,
-    getArticles(page = 5) {
-      console.log(page);
+    getArticles(page = 1) {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/articles/?page=${page}`;
       this.isLoading = true;
       console.log(this.isLoading, "loading");
@@ -114,7 +122,7 @@ export default {
     openDelModal(item) {
       // v-for 傳 item 進來到
       this.tempArticle = { ...item };
-      console.log(this.tempArticle,"item");
+      console.log(this.tempArticle, "item");
       const delComponent = this.$refs.delModal;
       delComponent.showModal();
     },
