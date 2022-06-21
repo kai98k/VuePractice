@@ -14,17 +14,19 @@
       <thead>
         <tr>
           <th scope="col" width="300">優惠券名稱</th>
-          <th scope="col" width="300">折扣</th>
-          <th scope="col" width="300">到期日</th>
+          <th scope="col" width="100">折扣</th>
+          <th scope="col" >到期日</th>
+          <th scope="col">兌換碼</th>
           <th scope="col">剩餘數量</th>
           <th width="200">編輯</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
         <tr v-for="item in coupons" :key="item.id">
-          <td>{{item.title}}</td>
+          <td>{{ item.title }}</td>
           <td>{{ item.percent }}</td>
-          <td>{{ date(item.due_date) }}</td>
+          <td>{{ new Date(item.due_date).toLocaleDateString() }}</td>
+          <td>{{ item.code }}</td>
           <td>
             {{ item.is_enabled }}
           </td>
@@ -48,8 +50,12 @@
       </tbody>
     </table>
     <pagination :pages="paginations" @emit-pages="getCoupons"></pagination>
-    <couponModal ref="couponModal" :coupon="tempCoupon" @update-coupon="updateCoupon"></couponModal>
-      <delModal
+    <couponModal
+      ref="couponModal"
+      :coupon="tempCoupon"
+      @update-coupon="updateCoupon"
+    ></couponModal>
+    <delModal
       ref="delModal"
       :item="tempCoupon"
       @del-item="delCoupon"
@@ -57,30 +63,28 @@
   </div>
 </template>
 <script>
-import {date} from "../methods/filters"
-import pagination from "../components/Pagination.vue"
-import couponModal from "../components/CouponModal.vue"
-import delModal from "../components/DelModal.vue"
+import pagination from "../components/Pagination.vue";
+import couponModal from "../components/CouponModal.vue";
+import delModal from "../components/DelModal.vue";
 
 export default {
-    data(){
-        return{
-            isNew:false,
-            isLoading:false,
-            paginations: {},
-            coupons:[],
-            tempCoupon:{},
-        };
-    },
-    components:{
-        pagination,
-        couponModal,
-        delModal,
-    },
-    inject: ["emitter"],
-    methods: {
-       date,
-        getCoupons(page = 1) {
+  data() {
+    return {
+      isNew: false,
+      isLoading: false,
+      paginations: {},
+      coupons: [],
+      tempCoupon: {},
+    };
+  },
+  components: {
+    pagination,
+    couponModal,
+    delModal,
+  },
+  inject: ["emitter"],
+  methods: {
+    getCoupons(page = 1) {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/coupons/?page=${page}`;
       this.isLoading = true;
       console.log(this.isLoading, "loading");
@@ -122,8 +126,9 @@ export default {
         this.getCoupons();
       });
     },
-     updateCoupon(item) {
+    updateCoupon(item) {
       this.tempCoupon = item;
+      this.tempCoupon.due_date = new Date(item.due_date).valueOf();
       // 新增
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/coupon`;
       const couponComponent = this.$refs.couponModal;
@@ -153,9 +158,9 @@ export default {
         }
       });
     },
-   },
-   created() {
-     this.getCoupons();
-   },
-}
+  },
+  created() {
+    this.getCoupons();
+  },
+};
 </script>

@@ -7,7 +7,7 @@
     aria-hidden="true"
     ref="modal"
   >
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
       <div class="modal-content border-0">
         <div class="modal-header bg-secondary text-white">
           <h5 class="modal-title" id="exampleModalLabel">
@@ -21,36 +21,47 @@
           ></button>
         </div>
         <div class="modal-body">
-          <div class="input-group mt-3 align-items-center">
+          <div class="input-group mt-3 align-items-center flex-wrap">
             <label class="form-label" for="title">優惠券名稱</label>
             <input
               type="text"
-              class="form-control  mx-3"
+              class="form-control mx-3"
               id="title"
               placeholder="請輸入優惠券名稱"
               v-model="tempCoupon.title"
             />
+          </div>
+          <div class="input-group mt-3 align-items-center flex-wrap">
             <label class="form-label" for="sale">折扣%數</label>
             <input
               type="number"
-              class="form-control  mx-3"
+              class="form-control mx-3"
               id="sale"
               placeholder="請輸入折扣%數"
               v-model="tempCoupon.percent"
               max="100"
-            />
-            <label class="form-label" for="num">優惠券數量</label>
+            /><label class="form-label" for="num">優惠券數量</label>
             <input
               type="number"
-              class="form-control  mx-3"
+              class="form-control mx-3"
               id="num"
               placeholder="請輸入數量"
               v-model="tempCoupon.is_enabled"
             />
-             <label class="form-label" for="date">優惠券到期日</label>
+          </div>
+          <div class="input-group mt-3 align-items-center flex-wrap">
+            <label class="form-label" for="code">兌換碼</label>
+            <input
+              type="text"
+              class="form-control mx-3"
+              id="code"
+              placeholder="請輸入兌換碼"
+              v-model="tempCoupon.code"
+            />
+            <label class="form-label" for="date">優惠券到期日</label>
             <input
               type="date"
-              class="form-control  mx-3"
+              class="form-control mx-3"
               id="date"
               v-model="tempCoupon.due_date"
             />
@@ -63,7 +74,7 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="$emit('update-product', tempCoupon)"
+            @click="$emit('update-coupon', tempCoupon)"
           >
             <!-- emit 將內層資料向外傳遞 -->
             確認
@@ -89,6 +100,12 @@ export default {
   watch: {
     coupon() {
       this.tempCoupon = this.coupon;
+      if (this.tempCoupon.due_date) {
+        console.log("22");
+        this.tempCoupon.due_date = new Date(this.coupon.due_date)
+          .toISOString()
+          .slice(0, 10);
+      }
     },
   },
   data() {
