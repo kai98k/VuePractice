@@ -1,10 +1,15 @@
 <template>
   <swiper :slides-per-view="1" :navigation="true">
-    <swiper-slide v-for="n in 7" :key="n"> {{ n }} </swiper-slide>
+    <swiper-slide>
+      <div class="container"> <h2>Explore What<br>You Need!</h2></div>
+     
+    </swiper-slide>
+    <swiper-slide> </swiper-slide>
+    <swiper-slide> </swiper-slide>
   </swiper>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .swiper-slide {
   display: flex;
   height: 100vh;
@@ -15,10 +20,21 @@
   font-weight: 700;
 }
 .swiper-slide:nth-child(1n) {
-  background-color: palevioletred;
+
+  background-image: url(https://images.unsplash.com/photo-1594325624708-75a0a6cf806f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
+  background-clip: content-box;
+  background-size: cover;
+  background-position: center;
+  justify-content: flex-start;
+
 }
 .swiper-slide:nth-child(2n) {
-  background-color: skyblue;
+
+
+  background-image: url(https://images.unsplash.com/photo-1642505173110-c51e4fc1d5c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
+  background-clip: content-box;
+  background-size: cover;
+  background-position: center;
 }
 .swiper-slide:nth-child(3n) {
   background-color: peru;
