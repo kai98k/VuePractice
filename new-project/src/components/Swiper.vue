@@ -1,15 +1,138 @@
 <template>
-  <swiper :slides-per-view="1" :navigation="true">
+  <swiper :slides-per-view="1" :navigation="true" :pagination="pagination">
     <swiper-slide>
-      <div class="container"> <h2>Explore What<br>You Need!</h2></div>
-     
+      <div class="container">
+        <h2 class="BannerText d-inline-block"><span v-html="animatedText"></span><span id="caret"></span></h2>
+      </div>
     </swiper-slide>
     <swiper-slide> </swiper-slide>
     <swiper-slide> </swiper-slide>
   </swiper>
 </template>
 
-<style scoped lang="scss">
+<style  lang="scss">
+.swiper {
+    width: 100%;
+    height: 100%;
+
+    &-pagination {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        transition: .3s opacity;
+        z-index: 10;
+        text-shadow: 1px 1px 4px black;
+        bottom: 2rem !important;
+        left: 20% !important;
+        &-item {
+            display: flex;
+            align-items: center;
+
+            .pagination-number {
+                opacity: 0.5;
+            }
+
+            &:hover,
+            &:focus {
+                cursor: pointer;
+            }
+
+            &:last-of-type {
+                .pagination-separator {
+                    width: 0;
+                }
+            }
+
+            &.active {
+                .pagination-number {
+                    opacity: 1;
+                }
+
+                .pagination-separator {
+                    width: 10vw;
+                }
+            }
+        }
+    }
+
+    &-slide {
+        background-position: center;
+        background-size: cover;
+    }
+
+}
+
+.swiper-button-next::after {
+    text-shadow: 1px 1px 4px black;
+}
+.swiper-button-next,.swiper-button-prev{
+    z-index: 10000;
+}
+.swiper-button-prev::after {
+    text-shadow: 1px 1px 4px black;
+}
+
+.pagination-number {
+    font-size: 2.5rem;
+    color: #F2F1F0;
+    padding: 0 0.5rem;
+}
+
+.pagination-separator {
+    display: none;
+
+    @media (min-width: 45em) {
+        display: block;
+    }
+
+    position: relative;
+    width: 40px;
+    height: 1px;
+    background: rgba(#F2F1F0, 0.25);
+    transition: all .3s ease;
+    box-shadow: 1px 1px 4px black;
+    &-loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #F2F1F0;
+        transform-origin: 0 0;
+    }
+}
+
+
+
+.intro-campaign-cta {
+    background-color: transparent;
+    border-color: #F2F1F0;
+    cursor: pointer;
+}
+
+.button-cta {
+    border-radius: 50px;
+    display: inline-block;
+    border: 1px solid #F2F1F0;
+    transition: 0.3s background-color ease-in-out;
+    padding: 15px;
+    color: #F2F1F0;
+    text-shadow: 1px 1px 4px black;
+    // box-shadow: 1px 1px 1px black;
+    &:hover
+    {
+        background-color: #F2F1F0;
+        color: black;
+        text-shadow:none;
+    }
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: #F2F1F0;
+}
 .swiper-slide {
   display: flex;
   height: 100vh;
@@ -20,24 +143,23 @@
   font-weight: 700;
 }
 .swiper-slide:nth-child(1n) {
-
   background-image: url(https://images.unsplash.com/photo-1594325624708-75a0a6cf806f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
   background-clip: content-box;
   background-size: cover;
   background-position: center;
   justify-content: flex-start;
-
 }
 .swiper-slide:nth-child(2n) {
-
-
   background-image: url(https://images.unsplash.com/photo-1642505173110-c51e4fc1d5c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
   background-clip: content-box;
   background-size: cover;
   background-position: center;
 }
 .swiper-slide:nth-child(3n) {
-  background-color: peru;
+  background-image: url(https://images.unsplash.com/photo-1642505173110-c51e4fc1d5c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
+  background-clip: content-box;
+  background-size: cover;
+  background-position: center;
 }
 .swiper-slide:nth-child(4n) {
   background-color: cadetblue;
@@ -51,20 +173,96 @@
 .swiper-slide:nth-child(7n) {
   background-color: palegreen;
 }
+#caret {
+  border-left: 5px solid orange;
+  margin-left: 3px;
+  animation: blink-caret 1s infinite;
+}
+
+
+@keyframes blink-caret {
+  from {
+    border-color: transparent;
+  }
+  to {
+    border-color: orange;
+  }
+}
 </style>
 <script>
 // Import Swiper Vue.js components
 import { Swiper } from "swiper/vue/swiper";
 import { SwiperSlide } from "swiper/vue/swiper-slide";
-import SwiperCore, { Navigation } from "swiper";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+
 // Import Swiper styles
 import "swiper/swiper.min.css";
 import "swiper/modules/navigation/navigation.min.css";
-SwiperCore.use([Navigation]);
+import "swiper/modules/pagination/pagination.min.css";
+
+SwiperCore.use([Navigation, Pagination]);
 export default {
   components: {
     Swiper,
     SwiperSlide,
+  },
+  data() {
+    return {
+      sloganText:`In NEED<br>YOU CAN EXPLORE<br>WHAT YOU NEED<br>INDEED`,
+      animatedText: "",
+      i: 0,
+      pagination: {
+        clickable: true,
+        bulletClass: "swiper-pagination-item",
+        bulletActiveClass: "active",
+        clickableClass: "swiper-pagination-clickable",
+        modifierClass: "swiper-pagination-",
+        renderBullet: function (index, className) {
+          var slideIndex = index;
+          let number ="";
+            // number = index <= 10 ? "0" + (slideIndex + 1) : slideIndex + 1;
+            for(var i = 0;i<=index;i++){
+              number += "I" 
+            }
+          var paginationItem = '<span class="swiper-pagination-item">';
+          paginationItem +=
+            '<span class="pagination-number">' + number + "</span>";
+          paginationItem =
+            index <= 10
+              ? paginationItem +
+                '<span class="pagination-separator"><span class="pagination-separator-loader"></span></span>'
+              : paginationItem;
+          paginationItem += "</span>";
+
+          return paginationItem;
+        },
+      },
+    };
+  },
+  watch: {
+    animatedText(newV) {
+      if (newV === this.sloganText) {
+        setTimeout(() => {
+          //注意這裡必須使用arrow function才能讓this被正確指向
+          this.i = 0;
+          this.animatedText = "";
+          this.typeWriter();
+        }, 5000);
+      }
+    },
+  },
+  methods: {
+    typeWriter() {
+      const speed = 200;
+      if (this.i < this.sloganText.length) {
+        this.animatedText += this.sloganText.charAt(this.i);
+        this.i++;
+        setTimeout(this.typeWriter, speed);
+      }
+    },
+  },
+   created() {
+    setTimeout(() => this.typeWriter(), 1000);
   },
 };
 </script>
