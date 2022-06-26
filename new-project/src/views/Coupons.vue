@@ -49,7 +49,7 @@
         </tr>
       </tbody>
     </table>
-    <pagination :pages="paginations" @emit-pages="getCoupons"></pagination>
+    <pagination :pages="pagination" @emit-pages="getCoupons"></pagination>
     <couponModal
       ref="couponModal"
       :coupon="tempCoupon"
@@ -64,15 +64,15 @@
 </template>
 <script>
 import pagination from "../components/Pagination.vue";
-import couponModal from "../components/CouponModal.vue";
-import delModal from "../components/DelModal.vue";
+import couponModal from "../components/Dashboard/CouponModal.vue";
+import delModal from "../components/Dashboard/DelModal.vue";
 
 export default {
   data() {
     return {
       isNew: false,
       isLoading: false,
-      paginations: {},
+      pagination: {},
       coupons: [],
       tempCoupon: {},
     };

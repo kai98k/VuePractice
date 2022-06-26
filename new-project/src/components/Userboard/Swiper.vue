@@ -6,6 +6,7 @@
     @slideChange="onSlideChange"
     @swiper="onSwiper"
     ref="mySwiper"
+    :autoplay="autoplay"
   >
     <swiper-slide>
       <div class="container">
@@ -23,11 +24,79 @@
         </h2>
       </div>
     </swiper-slide>
-    <swiper-slide> </swiper-slide>
+    <swiper-slide>
+    <div class="container">
+        <h2 class="BannerText d-inline-block">
+          <span v-html="animatedText" class="slogan2"></span>
+          <span id="caret"></span>
+        </h2>
+      </div>
+    </swiper-slide>
+      <div id="scrollDown">
+      <a href="#"><span></span></a>
+  </div>
   </swiper>
 </template>
 
 <style  lang="scss">
+#scrollDown a{
+  z-index: 100;
+  position: absolute;
+  bottom: 15rem;
+  left: 17%;
+  width: 30px;
+  height: 50px;
+  margin-left: -15px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  box-sizing: border-box;
+}
+#scrollDown a::before {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  background-color: #fff;
+  border-radius: 100%;
+  -webkit-animation: sdb10 2s infinite;
+  animation: sdb10 2s infinite;
+  box-sizing: border-box;
+}
+@-webkit-keyframes sdb10 {
+  0% {
+    -webkit-transform: translate(0, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: translate(0, 20px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes sdb10 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate(0, 20px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .swiper {
   width: 100%;
   height: 100%;
@@ -80,7 +149,9 @@
     background-size: cover;
   }
 }
-
+.swiper{
+  box-shadow: 1px 2px 10px black;
+}
 .swiper-button-next::after {
   text-shadow: 1px 1px 4px black;
 }
@@ -162,6 +233,7 @@
   background-size: cover;
   background-position: center;
   justify-content: flex-start;
+
 }
 .swiper-slide:nth-child(2n) {
   background-image: url(https://images.unsplash.com/photo-1631730359585-38a4935cbec4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
@@ -174,26 +246,19 @@
   background-clip: content-box;
   background-size: cover;
   background-position: center;
-}
-.swiper-slide:nth-child(4n) {
-  background-color: cadetblue;
-}
-.swiper-slide:nth-child(5n) {
-  background-color: plum;
-}
-.swiper-slide:nth-child(6n) {
-  background-color: goldenrod;
-}
-.swiper-slide:nth-child(7n) {
-  background-color: palegreen;
+
+
 }
 .slogan {
   color: #0d0d0d;
-  text-shadow: 1px 3px 5px #0d0d0d;
+  text-shadow: 1px 1px 2px #0d0d0d;
+  font-weight:900;
 }
 .slogan2 {
   color: #f2f1f0;
-  text-shadow: 1px 3px 5px #0d0d0d;
+  text-shadow: 1px 3px 4px #0d0d0d;
+    font-weight: 900;
+
 }
 #caret {
   border-right: 5px solid #f2f1f0;
@@ -209,19 +274,25 @@
     border-color: #f2f1f0;
   }
 }
+  @media (max-width: 568px) {
+    .swiper-button-next,
+.swiper-button-prev,#scrollDown{
+  display:none !important;
+}
+  }
 </style>
 <script>
 // Import Swiper Vue.js components
 import { Swiper } from "swiper/vue/swiper";
 import { SwiperSlide } from "swiper/vue/swiper-slide";
-import SwiperCore, { Navigation, Pagination } from "swiper";
+import SwiperCore, { Navigation, Pagination,Autoplay } from "swiper";
 
 // Import Swiper styles
 import "swiper/swiper.min.css";
 import "swiper/modules/navigation/navigation.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination,Autoplay]);
 export default {
   components: {
     Swiper,
@@ -234,6 +305,9 @@ export default {
       animatedText: "",
       i: 0,
       mySwiper: {},
+      autoplay:{
+          "delay": 3000,
+      },
       pagination: {
         clickable: true,
         bulletClass: "swiper-pagination-item",
@@ -277,7 +351,7 @@ export default {
   methods: {
     onSlideChange(event) {
       //可以在這做換頁面事件操縱
-        this.activeIndex = swiper.activeIndex;
+        this.activeIndex = event.activeIndex;
       },
     onSwiper(swiper) {
       //可以在這初始頁面事件操縱

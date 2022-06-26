@@ -126,7 +126,7 @@
 </style>
 <script>
 import Modal from "bootstrap/js/dist/modal";
-import { date } from "../methods/filters";
+import { date } from "../../methods/filters";
 
 export default {
   props: {

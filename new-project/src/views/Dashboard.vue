@@ -16,7 +16,7 @@ position: relative;
 <script>
 import emitter from "@/methods/emitter"; //https://israynotarray.com/vue/20190510/86469050/ @路徑位置
 import ToastMessages from "@/components/ToastMessages.vue";
-import Navbar from "../components/Navbar.vue"; //拆分元件
+import Navbar from "../components/Dashboard/Navbar.vue"; //拆分元件
 
 
 export default {

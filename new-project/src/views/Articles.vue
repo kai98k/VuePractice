@@ -54,7 +54,7 @@
         </tr>
       </tbody>
     </table>
-    <pagination :pages="paginations" @emit-pages="getArticles"></pagination>
+    <pagination :pages="pagination" @emit-pages="getArticles"></pagination>
     <articleModal
       ref="articleModal"
       :article="tempArticle"
@@ -71,15 +71,15 @@
 <script>
 // import page from "../components/page.vue";
 import { date } from "../methods/filters.js";
-import articleModal from "../components/ArticleModal.vue";
-import delModal from "../components/DelModal.vue";
+import articleModal from "../components/Dashboard/ArticleModal.vue";
+import delModal from "../components/Dashboard/DelModal.vue";
 import pagination from "../components/Pagination.vue";
 
 export default {
   data() {
     return {
       articles: [],
-      paginations: {},
+      pagination: {},
       tempArticle: {},
       isNew: false,
       isLoading: false,

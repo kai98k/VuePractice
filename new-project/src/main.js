@@ -9,6 +9,7 @@ import router from './router'
 import { currency } from './methods/filters';
 import VueTags from "vue-tags";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'aos/dist/aos.css'
 
 
 /* add icons to the library */

@@ -39,9 +39,13 @@ const routes = [
     ],
   },
   {
-    path:'/UserBoard',
+    path:'/userboard',
     component: ()=>import('../views/UserBoard.vue'),
   },
+  {
+    path: '/news/:articleId',
+    component: ()=>import('../views/NewsArticle.vue'),
+  }
 ]
 
 const router = createRouter({

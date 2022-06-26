@@ -70,8 +70,8 @@ table{
 }
 </style>
 <script>
-import productModal from "../components/ProductModal.vue";
-import delModal from "../components/DelModal.vue";
+import productModal from "../components/Dashboard/ProductModal.vue";
+import delModal from "../components/Dashboard/DelModal.vue";
 import pagination from "../components/Pagination.vue";
 import {currency} from "../methods/filters.js";
 
