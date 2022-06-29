@@ -18,11 +18,12 @@
           >
         </li>
         <li class="nav-item">
-          <a
+          <router-link
+            to="/products"
             class="nav-link text-light text-shadow"
             aria-current="page"
-            href="#" :class="{textDark:NavActive}"
-            >Products</a
+             :class="{textDark:NavActive}"
+            >Products</router-link
           >
         </li>
         <li class="nav-item me-xl-3">

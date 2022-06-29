@@ -7,9 +7,6 @@
   <!-- :item 內層資料綁定外層資料 tempProduct，一樣 call 外層進去渲染，ref 傳參考來使用內層 method -->
 </template>
 <style scoped lang="scss">
-table{
-  box-shadow:3px 3px 10px black;
-}
 </style>
 <script>
 import pagination from "../components/Pagination.vue";
@@ -25,12 +22,10 @@ export default {
   components: {
     pagination,
   },
-  inject: ["emitter"],
   methods: {
-    currency,
     getProducts(page = 1) {
       console.log(page);
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/?page=${page}`;
       this.$http.get(api).then((res) => {
         if (res.data.success) {
           console.log("products", res.data);
