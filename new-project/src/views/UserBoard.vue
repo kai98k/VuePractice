@@ -137,6 +137,10 @@ export default {
       this.$refs.center.style.cssText = `transform: translateY(${height}px);`;
       this.$refs.center2.style.cssText = `transform: translateY(${height2}px);`;
     },
+    goAnchor(id){
+      var anchor = document.getElementById(id);
+      anchor.scrollIntoView();
+    }
   },
   created() {
    AOS.init();

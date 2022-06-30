@@ -14,6 +14,7 @@
             class="nav-link text-light text-shadow"
             aria-current="page"
             href="#" :class="{textDark:NavActive}"
+            @click.prevent="goAnchor(news)"
             >News</a
           >
         </li>
