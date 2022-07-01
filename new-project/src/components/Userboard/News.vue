@@ -1,5 +1,5 @@
 <template>
-  <div class="container main mx-auto" id="news">
+  <div class="container main mx-auto">
     <h4 class="text-center text-light text-shadow py-5 m-0">News</h4>
     <hr>
     <ul>

@@ -1,5 +1,5 @@
 <template>
-  
+
   <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
 
   <!-- :product 內層資料綁定外層資料 tempProduct，利用 emit前內後外，將資料從內層傳回外層 -->
@@ -36,6 +36,7 @@ export default {
     },
   },
   created() {
+    this.getProducts();
   },
 };
 </script>

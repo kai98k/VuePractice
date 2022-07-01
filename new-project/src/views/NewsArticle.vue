@@ -1,5 +1,7 @@
 <template>
-  <Loading :active="isLoading"></Loading>
+  <Loading :active="isLoading">
+    <img src="../assets/image/Infinity-1.6s-200px.gif">
+  </Loading>
   <UserNavbar></UserNavbar>
   <div class="container-fluid main pt-5">
     <div class="container">

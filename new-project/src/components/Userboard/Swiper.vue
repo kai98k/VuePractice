@@ -33,7 +33,7 @@
       </div>
     </swiper-slide>
       <div id="scrollDown">
-      <a href="#"><span></span></a>
+      <a href="#" v-scroll-to="'#ideal'"><span></span></a>
   </div>
   </swiper>
 </template>

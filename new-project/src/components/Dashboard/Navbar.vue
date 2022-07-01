@@ -3,9 +3,10 @@
     class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark backBar"
     style="width: 280px"
   >
-    <a
-      href="/"
+    <router-link
+      to="/"
       class="
+        h2
         d-flex
         align-items-center
         mb-3 mb-md-0
@@ -13,8 +14,8 @@
         text-white text-decoration-none
       "
     >
-      brandA
-    </a>
+      N E E D
+    </router-link>
     <hr />
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">

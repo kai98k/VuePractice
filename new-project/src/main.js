@@ -10,6 +10,8 @@ import { currency } from './methods/filters';
 import VueTags from "vue-tags";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'aos/dist/aos.css'
+var VueScrollTo = require('vue-scrollto');
+
 
 
 /* add icons to the library */
@@ -22,6 +24,7 @@ app.config.globalProperties.$filters = {
 };
 app.use(VueAxios, axios);
 app.use(router);
+app.use(VueScrollTo);
 app.component('Loading',Loading);
 app.component('VueTags',VueTags);
 app.mount('#app');
