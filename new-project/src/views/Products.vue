@@ -66,7 +66,6 @@
 </template>
 <style scoped lang="scss">
 table{
-  box-shadow:3px 3px 10px black;
 }
 </style>
 <script>

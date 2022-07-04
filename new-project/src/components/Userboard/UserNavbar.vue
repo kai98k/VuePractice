@@ -14,6 +14,7 @@
         href="#"
         class="nav-link text-light text-shadow bread"
         @click.prevent="openMenu"
+        :class="{ textDark: NavActive }"
         ><i class="bi bi-list nav-text"></i
       ></a>
       <ul
@@ -57,28 +58,28 @@
           </a>
         </li>
         <li class="nav-item" v-if="windowWidth > 986">
-          <a
+          <router-link
             class="nav-link text-light text-shadow"
             :class="{ textDark: NavActive }"
-            href="#"
+            to="/userlogin"
             ><i class="bi bi-person-fill nav-text"></i>
-          </a>
+          </router-link>
         </li>
         <li class="nav-item" v-else>
-          <a
+          <router-link
             class="nav-link text-light text-shadow"
-            href="#"
+            to="/userlogin"
             :class="{ textDark: NavActive }"
             >Sign In/Sign Up
-          </a>
+          </router-link>
         </li>
         <li class="nav-item" v-if="windowWidth > 986">
-          <a
+          <router-link
             class="nav-link text-light text-shadow"
             :class="{ textDark: NavActive }"
-            href="#"
+            to="/userlogin"
             ><i class="bi bi-send-fill nav-text"></i>
-          </a>
+          </router-link>
         </li>
         <li class="nav-item" v-else>
           <a
@@ -117,6 +118,9 @@
   display: none;
 }
 @media (max-width: 986px) {
+  .text-shadow {
+  text-shadow: 1px 2px 1px black;
+}
   .navbar-nav {
     position: absolute;
     top: 0%;

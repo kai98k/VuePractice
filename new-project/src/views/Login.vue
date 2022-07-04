@@ -2,8 +2,8 @@
   <div class="container mt-5">
     <form class="row justify-content-center" @submit.prevent="signIn">
       <!-- 後綴prevent取消html預設事件 -->
-      <div class="col-md-6">
-        <h1 class="h3 mb-3 font-weight-normal">請先登入</h1>
+      <div class="col-md-6 mt-5">
+        <h1 class="h3 mb-3 font-weight-normal mt-5">後台登入</h1>
         <div class="mb-2">
           <label for="inputEmail" class="sr-only">Email address</label>
           <input

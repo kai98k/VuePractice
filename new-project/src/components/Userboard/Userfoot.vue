@@ -13,6 +13,7 @@
     </div>
     <p class="text-center text-shadow text-light mt-3">
       &copy; 2022 NEED 所有照片皆為練習使用，不具版權。
+      <router-link to="/login" class="text-light text-shadow"><i class="bi bi-door-open"></i></router-link>
     </p>
   </footer>
 </template>

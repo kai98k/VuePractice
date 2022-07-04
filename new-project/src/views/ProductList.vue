@@ -5,17 +5,51 @@
   </Loading>
   <div class="container-fluid main pt-5">
     <h1 class="text-center text-shadow text-light mt-5">
-      你的美妝、保養都在 N E E D
+      你的美妝、保養都在<br />N E E D
     </h1>
   </div>
-  <div class="container-fluid bg d-flex">
-    <ul class="categories">
+  <div class="container-fluid bg d-flex px-0">
+    <ul class="categories p-0 my-0 d-md-flex d-none">
+      <li>
+        <h2 class="p-2 bg-light m-0">產 品 分 類</h2>
+      </li>
+      <li>
+        <a href="#" @click.prevent="clickMenu()">全部</a>
+      </li>
       <li v-for="(category, index) in categories" :key="index">
-        <a href="#">{{ category }}</a>
+        <a href="#" @click.prevent="clickMenu(`${category}`)">{{ category }}</a>
       </li>
     </ul>
-    <div class="container mx-0">
-      <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
+    <div class="container mt-5">
+      <h2 class="text-center text-light text-shadow d-md-block d-none">{{ category }}</h2>
+      <select class="form-select d-md-none" aria-label="Default select example" @change="changeMenu">
+        <option selected  disabled>產品分類</option>
+        <option :value="category" v-for="(category, index) in categories" :key="index">{{category}}</option>
+      </select>
+      <ul class="card-group mt-5 row-cols-xl-5 row-cols-md-2 p-0">
+        <li v-for="(product, index) in tempProducts" :key="index" class="mt-3">
+          <div class="card mx-1 h-100">
+            <div class="img-box">
+              <img :src="product.imageUrl" class="card-img-top" alt="..." />
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="#">{{ product.title }}</a>
+              </h5>
+              <p class="card-text d-flex justify-content-between mt-3">
+                <del>{{ product.origin_price }}元</del
+                ><span>特價 {{ product.price }} 元</span>
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <pagination
+        :pages="pagination"
+        @emit-pages="getProducts"
+        class="mt-5"
+      ></pagination>
+      <Userfoot></Userfoot>
     </div>
   </div>
 
@@ -24,14 +58,63 @@
   <!-- :item 內層資料綁定外層資料 tempProduct，一樣 call 外層進去渲染，ref 傳參考來使用內層 method -->
 </template>
 <style scoped lang="scss">
+.card-title {
+  a {
+    text-decoration: none;
+    color: #73513d;
+  }
+}
+.card-group {
+  img {
+    transition: all 0.5s;
+
+    cursor: pointer;
+    &:hover {
+      transition: all 0.5s;
+      transform: scale(1.2);
+    }
+  }
+}
+ul,
+li {
+  list-style: none;
+}
+.card {
+  box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.3);
+  .card-title {
+    font-size: 20px !important;
+  }
+}
+.img-box {
+  height: 300px;
+  overflow: hidden;
+}
 .categories {
   list-style: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
+  background: rgba(255, 255, 255, 0.9);
+  li {
+    list-style: none;
+    text-align: center;
+    width: 300px;
+    border-bottom: 1px solid rgba(217, 170, 113, 0.3);
+  }
   a {
+    font-weight: 900;
+    font-size: 20px;
+    text-decoration: none;
+    display: block;
     padding: 10px 15px;
+    transition: all 0.5s;
+
+    &:hover {
+      transition: all 0.5s;
+      color: #f2f1f0;
+      text-shadow: 1px 3px 5px black;
+      background: rgba(217, 170, 113, 0.5);
+    }
   }
 }
 .text-shadow {
@@ -40,24 +123,25 @@
 .main {
   background-image: url(https://source.unsplash.com/1200x900/?beauty);
   background-color: rgba(255, 255, 255, 0.3);
+  background-position: top;
+  background-attachment: fixed;
+  background-size: cover;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+  min-height: 300px;
+}
+.bg {
+  background: url(https://images.unsplash.com/photo-1603050906757-df6b62765342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
   background-position: center;
   background-attachment: fixed;
   background-size: cover;
-  min-height: 300px;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
-}
-.bg {
-  padding-top: 150px;
-  background: url(https://images.unsplash.com/photo-1524313118018-d8139913a0fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80);
 
   box-shadow: -5px -6px 7px rgba(0, 0, 0, 0.3);
-
-  min-height: 100vh;
 }
 </style>
 <script>
 import pagination from "../components/Pagination.vue";
 import UserNavbar from "../components/Userboard/UserNavbar.vue";
+import Userfoot from "../components/Userboard/Userfoot.vue";
 
 export default {
   data() {
@@ -67,11 +151,14 @@ export default {
       tempProduct: {},
       isLoading: false,
       categories: [],
+      tempProducts: [],
+      category: "全部",
     };
   },
   components: {
     pagination,
     UserNavbar,
+    Userfoot,
   },
   methods: {
     getProducts(page = 1) {
@@ -85,8 +172,13 @@ export default {
           this.products = res.data.products;
           this.pagination = res.data.pagination;
           this.getMenu();
+          this.clickMenu();
         }
       });
+    },
+    changeMenu(event){
+      console.log(event.target.value);
+      this.clickMenu(event.target.value);
     },
     getMenu() {
       this.products.forEach((product, index, array) => {
@@ -94,6 +186,23 @@ export default {
       });
       this.categories = [...new Set(this.categories)];
       console.log(this.categories);
+    },
+    clickMenu(category = "全部") {
+      this.category = category;
+      this.tempProducts = [];
+      console.log(category);
+      this.products.forEach((product, index, array) => {
+        if (product.category == category) {
+          this.tempProducts.push(product);
+        }
+        return;
+      });
+      if (category == "全部") {
+        this.products.forEach((product, index, array) => {
+          this.tempProducts.push(product);
+        });
+      }
+      console.log(this.tempProducts);
     },
   },
   created() {
