@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   border-radius: 15px;
-  width: 100%;
+  max-width: 70%;
   height: 300px;
   background: rgba(0, 0, 0, 0.7);
   transition: all 2s;
@@ -36,6 +36,18 @@
   height: 100vh;
   background-size: cover;
 }
+@media (max-width: 968px) {
+  .bar {
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    height: 580px;
+  }
+  .loginCard {
+    width: 350px;
+    height: 300px;
+  }
+}
 </style>
 <script>
 import UserNavbar from "../components/Userboard/UserNavbar.vue";
@@ -46,6 +58,7 @@ export default {
   data() {
     return {
       change: false,
+      windowWidth: window.innerWidth,
       Card: {
         transition: "all 2s",
         transform: "",
@@ -58,17 +71,33 @@ export default {
   },
   methods: {
     CardMove() {
-      if (this.change) {
-        this.Card.transform = `translateX(45rem)`;
+      if (this.windowWidth <= 968) {
+        if (this.change) {
+          this.Card.transform = `translateY(15rem)`;
+        } else {
+          this.Card.transform = `translateX(0em)`;
+        }
       } else {
-        this.Card.transform = `translateX(0rem)`;
+        if (this.change) {
+          this.Card.transform = `translateX(45rem)`;
+        } else {
+          this.Card.transform = `translateX(0em)`;
+        }
       }
     },
     InfoMove() {
-      if (this.change) {
-        this.Info.transform = `translateX(-50rem)`;
+      if (this.windowWidth <= 968) {
+        if (this.change) {
+          this.Info.transform = `translateY(-20rem)`;
+        } else {
+          this.Info.transform = `translateY(0em)`;
+        }
       } else {
-        this.Info.transform = `translateX(0rem)`;
+        if (this.change) {
+          this.Info.transform = `translateX(-45rem)`;
+        } else {
+          this.Info.transform = `translateX(0em)`;
+        }
       }
     },
     changeLogin() {
@@ -78,4 +107,4 @@ export default {
     },
   },
 };
-</script>
+</script> 
