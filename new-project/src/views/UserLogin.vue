@@ -2,8 +2,8 @@
   <UserNavbar></UserNavbar>
   <div class="container-fluid bg">
     <div class="container bar">
-      <div class="loginCard" :class="{ active: change }"></div>
-      <div class="info p-5" :class="{ active: change }">
+      <div class="loginCard" :style="Card"></div>
+      <div class="info p-5" :style="Info">
         <h4 class="text-light">還沒註冊帳號嗎?</h4>
         <button @click="changeLogin">註冊</button>
       </div>
@@ -11,19 +11,11 @@
   </div>
 </template>
 <style scoped lang="scss">
-.info{
-    &.active{
-            animation: changeInfo 2s forwards;
-    }
-}
 .loginCard {
   border-radius: 5px;
   width: 500px;
   height: 500px;
   background: rgba(255, 255, 255, 1);
-  &.active {
-    animation: changeCard 2s forwards;
-  }
 }
 .bar {
   justify-content: space-between;
@@ -35,20 +27,7 @@
   height: 300px;
   background: rgba(0, 0, 0, 0.7);
   transition: all 2s;
-}
-@keyframes changeCard {
-  0% {
-  }
-  100% {
-    transform: translateX(45rem);
-  }
-}
-@keyframes changeInfo {
-  0% {
-  }
-  100% {
-    transform: translateX(-45rem);
-  }
+  transform: translateX();
 }
 .bg {
   display: flex;
@@ -67,11 +46,35 @@ export default {
   data() {
     return {
       change: false,
+      Card: {
+        transition: "all 2s",
+        transform: "",
+      },
+      Info: {
+        transition: "all 2s",
+        transform: "",
+      },
     };
   },
   methods: {
+    CardMove() {
+      if (this.change) {
+        this.Card.transform = `translateX(45rem)`;
+      } else {
+        this.Card.transform = `translateX(0rem)`;
+      }
+    },
+    InfoMove() {
+      if (this.change) {
+        this.Info.transform = `translateX(-50rem)`;
+      } else {
+        this.Info.transform = `translateX(0rem)`;
+      }
+    },
     changeLogin() {
       this.change = !this.change;
+      this.CardMove();
+      this.InfoMove();
     },
   },
 };
