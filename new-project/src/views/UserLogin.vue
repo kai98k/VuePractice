@@ -17,23 +17,32 @@
           id="account"
           placeholder="請輸入密碼"
         />
-        <input v-if="change"
+        <input
+          v-if="change"
           type="text"
           class="form-control mt-2"
           id="account"
           placeholder="請確認輸入密碼"
         />
 
-        <button type="submit" class="btn btn-primary mt-2 mt-md-5 align-self-end" v-if="!change">
+        <button
+          type="submit"
+          class="btn btn-primary mt-2 mt-md-5 align-self-end"
+          v-if="!change"
+        >
           登入
         </button>
-        <button  v-else type="submit" class="btn btn-primary mt-2 mt-md-5 align-self-end">
+        <button
+          v-else
+          type="submit"
+          class="btn btn-primary mt-2 mt-md-5 align-self-end"
+        >
           註冊
         </button>
       </form>
       <div class="info" :style="Info">
-        <h4 class="text-light" v-if="!change" >還沒註冊帳號嗎?</h4>
-        <h4 class="text-light" v-else >已經有帳號了嗎?</h4>
+        <h4 class="text-light" v-if="!change">還沒註冊帳號嗎?</h4>
+        <h4 class="text-light" v-else>已經有帳號了嗎?</h4>
         <button
           @click="changeLogin"
           type="button"
@@ -42,7 +51,7 @@
         >
           註冊
         </button>
-                <button
+        <button
           @click="changeLogin"
           type="button"
           class="btn btn-outline-primary mt-4"
@@ -94,12 +103,12 @@
     justify-content: center;
     width: 300px;
     height: 580px;
-    padding:0px;
+    padding: 0px;
   }
   .info {
-  margin-top:50px;
-  width: 100%;
-}
+    margin-top: 50px;
+    width: 100%;
+  }
   .loginCard {
     width: 350px;
     height: 300px;
