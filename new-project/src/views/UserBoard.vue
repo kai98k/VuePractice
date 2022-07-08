@@ -191,7 +191,7 @@ export default {
     AOS.init();
     setTimeout(() => {
       this.isLoading = false;
-    }, 1500);
+    }, 1000);
   },
 };
 </script>

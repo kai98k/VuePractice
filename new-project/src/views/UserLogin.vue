@@ -22,7 +22,7 @@
           type="text"
           class="form-control mt-2"
           id="account"
-          placeholder="請確認輸入密碼"
+          placeholder="請確認密碼"
         />
 
         <button

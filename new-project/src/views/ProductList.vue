@@ -3,66 +3,88 @@
   <Loading :active="isLoading">
     <img src="../assets/image/Infinity-1.6s-200px.gif" />
   </Loading>
-<div class="wrap">
-  <div class="container-fluid main pt-5">
-    <h1 class="text-center text-shadow text-light mt-5">
-      你的美妝、保養都在<br />N E E D
-    </h1>
-  </div>
-  <div class="container-fluid bg d-flex px-0">
-    <ul class="categories p-0 my-0 d-md-flex d-none">
-      <li>
-        <h2 class="p-2 bg-light m-0">產 品 分 類</h2>
-      </li>
-      <li>
-        <a href="#" @click.prevent="clickMenu()">全部</a>
-      </li>
-      <li v-for="(category, index) in categories" :key="index">
-        <a href="#" @click.prevent="clickMenu(`${category}`)">{{ category }}</a>
-      </li>
-    </ul>
-    <div class="container mt-5">
-      <h2 class="text-center text-light text-shadow d-md-block d-none">{{ category }}</h2>
-      <select class="form-select d-md-none" aria-label="Default select example" @change="changeMenu">
-        <option selected  disabled>產品分類</option>
-        <option :value="category" v-for="(category, index) in categories" :key="index">{{category}}</option>
-      </select>
-      <ul class="card-group mt-5 row-cols-xl-5 row-cols-md-2 p-0">
-        <li v-for="(product, index) in tempProducts" :key="index" class="mt-3">
-          <div class="card mx-1 h-100">
-            <div class="img-box">
-              <img :src="product.imageUrl" class="card-img-top" alt="..." />
+  <div class="wrap">
+    <div class="container-fluid main pt-5">
+      <h1 class="text-center text-shadow text-light mt-5">
+        你的美妝、保養都在<br />N E E D
+      </h1>
+    </div>
+    <div class="container-fluid bg d-flex px-0">
+      <div class="container mt-5">
+        <select
+          class="form-select catergorySelect"
+          aria-label="Default select example"
+          @change="changeMenu"
+        >
+          <option selected disabled>產品分類</option>
+          <option value="全部">全部商品</option>
+          <option
+            :value="category"
+            v-for="(category, index) in categories"
+            :key="index"
+          >
+            {{ category }}
+          </option>
+        </select>
+        <nav aria-label="breadcrumb" class="ms-4">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <router-link to="/" class="text-light">Home</router-link>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Products</li>
+          </ol>
+        </nav>
+        <ul class="card-group row-cols-xl-5 row-cols-md-2 p-0 d-sm-flex">
+          <li
+            v-for="(product, index) in tempProducts"
+            :key="index"
+            class="mb-5"
+          >
+            <div class="card mx-1 h-100">
+              <div class="img-box">
+                <img :src="product.imageUrl" class="card-img-top" alt="..." />
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a href="#" @click.prevent="pushProductPage(product.id)">{{
+                    product.title
+                  }}</a>
+                </h5>
+                <p class="card-text d-flex justify-content-between mt-3">
+                  <del>{{ product.origin_price }}元</del
+                  ><i class="bi bi-arrow-right-short"></i>
+                  <span class="text-danger">特價 {{ product.price }} 元</span>
+                </p>
+              </div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title">
-                <a href="#">{{ product.title }}</a>
-              </h5>
-              <p class="card-text d-flex justify-content-between mt-3">
-                <del>{{ product.origin_price }}元</del
-                ><span>特價 {{ product.price }} 元</span>
-              </p>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <pagination
-        :pages="pagination"
-        @emit-pages="getProducts"
-        class="mt-5"
-      ></pagination>
-      <Userfoot></Userfoot>
+          </li>
+        </ul>
+        <pagination
+          :pages="pagination"
+          @emit-pages="getProducts"
+          class="mt-5"
+        ></pagination>
+        <Userfoot></Userfoot>
+      </div>
     </div>
   </div>
-</div>
   <!-- :product 內層資料綁定外層資料 tempProduct，利用 emit前內後外，將資料從內層傳回外層 -->
 
   <!-- :item 內層資料綁定外層資料 tempProduct，一樣 call 外層進去渲染，ref 傳參考來使用內層 method -->
 </template>
 <style scoped lang="scss">
-.wrap{
+.catergorySelect {
+  width: 300px;
+  text-align: center;
+  margin: 0 auto;
+  option {
+    text-align: center;
+  }
+}
+.wrap {
   background-image: url(https://images.unsplash.com/photo-1533387520709-752d83de3630?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80);
   background-size: cover;
-  background-attachment:fixed;
+  background-attachment: fixed;
   background-position: center;
 }
 .card-title {
@@ -72,6 +94,8 @@
   }
 }
 .card-group {
+  justify-content: space-between;
+  flex-wrap: wrap;
   img {
     transition: all 0.5s;
     width: 200px;
@@ -81,7 +105,7 @@
       transform: scale(1.2);
     }
   }
-  li{
+  li {
     display: flex;
     justify-content: center;
   }
@@ -141,7 +165,6 @@ li {
   // background-attachment: fixed;
   // background-size: cover;
   // box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
-  min-height: 300px;
 }
 .bg {
   // background: url(https://images.unsplash.com/photo-1603050906757-df6b62765342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
@@ -190,7 +213,7 @@ export default {
         }
       });
     },
-    changeMenu(event){
+    changeMenu(event) {
       console.log(event.target.value);
       this.clickMenu(event.target.value);
     },
@@ -217,6 +240,9 @@ export default {
         });
       }
       console.log(this.tempProducts);
+    },
+    pushProductPage(id) {
+      this.$router.push(`/products/${id}`);
     },
   },
   created() {
