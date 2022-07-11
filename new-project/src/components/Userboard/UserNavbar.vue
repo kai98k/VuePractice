@@ -190,7 +190,7 @@ export default {
     },
     handleScroll() {
       console.log();
-      if (window.scrollY > 200) {
+      if (window.scrollY > 100) {
         this.NavActive = true;
       } else {
         this.NavActive = false;

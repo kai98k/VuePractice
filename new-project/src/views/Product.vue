@@ -19,37 +19,74 @@
         </ol>
       </nav>
       <div class="row main">
-        <div class="img-box p-0 col-6">
+        <div class="img-box p-0 col-12 col-md-6">
           <img :src="mainImage" class="mainImg" />
           <ul class="imageList">
-            <li><img :src="product.imageUrl" @click.prevent="seeImage(product.imageUrl)"/></li>
+            <li>
+              <img
+                :src="product.imageUrl"
+                @click.prevent="seeImage(product.imageUrl)"
+              />
+            </li>
             <li v-for="(image, index) in product.imagesUrl" :key="index">
               <img :src="image" @click.prevent="seeImage(image)" />
             </li>
           </ul>
         </div>
-        <div class="col-6">
-          <h1 class="h2 text-light text-shadow mt-5">{{ product.title }}</h1>
+        <div class="col-12 col-md-6">
+          <h1 class="h2 text-light text-shadow mt-5 border-bottom">
+            {{ product.title }}
+          </h1>
           <p class="mt-5 text-primary text-shadow">描述 :</p>
           <p class="text-light text-shadow description">
             {{ product.description }}
           </p>
           <p class="mt-5 text-primary text-shadow">商品介紹 :</p>
           <p class="text-light text-shadow content">{{ product.content }}</p>
+          <div class="input-group mt-5 PutCart">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="請輸入數量"
+              aria-label="請輸入數量"
+              aria-describedby="button-addon2"
+              v-model="data.qty"
+            />
+            <button
+              class="btn btn-secondary"
+              type="button"
+              id="button-addon2"
+              @click="putInCartputInCart"
+            >
+              加入購物車
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <Userfoot></Userfoot>
   </div>
+  <ToastMessages></ToastMessages>
 </template>
 <style scoped lang="scss">
+.PutCart {
+  width: 250px;
+  margin-bottom: 15px;
+}
+h1 {
+  padding-bottom: 10px;
+  display: inline-block;
+  border-bottom: 5px solid #f2f1f0 !important;
+}
 .imageList {
-    width: 600px;
-    justify-content:space-between;
-    display: flex;
-  background: rgba(0,0,0,0.3);
+  margin-bottom: 0px;
+  width: 600px;
+  justify-content: space-between;
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
   padding: 15px 0px;
   list-style-type: none;
+  flex-wrap: wrap;
   img {
     cursor: pointer;
     width: 150px;
@@ -64,9 +101,11 @@
   color: hotpink;
 }
 .text-shadow {
-  text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.6);
+  text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
 }
 .main {
+  margin: 0 5px;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   border-radius: 5px;
   background: rgba(0, 0, 0, 0.3);
@@ -84,7 +123,35 @@
   background-position: top;
   min-height: 100vh;
 }
+@media (max-width: 1400px) {
+  .imageList {
+    width: 400px;
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  .mainImg {
+    width: 400px;
+    height: 400px;
+  }
+}
+@media (max-width: 968px) {
+  .main {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 @media (max-width: 698px) {
+  .img-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .imageList {
+    width: 300px;
+    flex-wrap: wrap;
+  }
   .mainImg {
     width: 300px;
     height: 300px;
@@ -92,6 +159,8 @@
 }
 </style>
 <script>
+import emitter from "../methods/emitter"; //https://israynotarray.com/vue/20190510/86469050/ @路徑位置
+import ToastMessages from "@/components/ToastMessages.vue";
 import UserNavbar from "../components/Userboard/UserNavbar.vue";
 import Userfoot from "../components/Userboard/Userfoot.vue";
 
@@ -99,13 +168,23 @@ export default {
   components: {
     UserNavbar,
     Userfoot,
+    ToastMessages,
+    
+  },
+  provide() {
+    return {
+      emitter,
+    };
   },
   data() {
     return {
       isLoading: false,
-      id: "",
       product: {},
-      mainImage:"",
+      mainImage: "",
+      data: {
+        product_id: "",
+        qty: 0,
+      },
     };
   },
   watch: {
@@ -120,8 +199,28 @@ export default {
     },
   },
   methods: {
+    putInCartputInCart() {
+      this.isLoading = true;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+      this.$http.post(api, { data: this.data }).then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          this.isLoading = false;
+          emitter.emit("push-message", {
+            style: "success",
+            title: "已加入購物車",
+          });
+        } else {
+          this.isLoading = false;
+             emitter.emit("push-message", {
+            style: "danger",
+            title: "伺服器忙碌中",
+          });
+        }
+      });
+    },
     getProduct() {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${this.id}`;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${this.data.product_id}`;
       this.isLoading = true;
       this.$http.get(api).then((res) => {
         console.log("res", res);
@@ -130,17 +229,17 @@ export default {
           console.log("data", res.data);
           this.product = res.data.product;
           console.log("product", this.product);
-        this.mainImage=this.product.imageUrl;
+          this.mainImage = this.product.imageUrl;
         }
       });
     },
-    seeImage(url){
-        this.mainImage = url;
-    }
+    seeImage(url) {
+      this.mainImage = url;
+    },
   },
   created() {
-    this.id = this.$route.params.productId;
+    this.data.product_id = this.$route.params.productId;
     this.getProduct();
-      },
+  },
 };
 </script>
