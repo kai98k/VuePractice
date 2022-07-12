@@ -15,7 +15,7 @@
               >Products</router-link
             >
           </li>
-          <li class="breadcrumb-item active" aria-current="page">本商品</li>
+          <li class="breadcrumb-item active text-dark" aria-current="page">本商品</li>
         </ol>
       </nav>
       <div class="row main">
@@ -51,6 +51,8 @@
               aria-label="請輸入數量"
               aria-describedby="button-addon2"
               v-model="data.qty"
+              min="1"
+              max="99"
             />
             <button
               class="btn btn-secondary"

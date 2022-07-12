@@ -45,8 +45,11 @@
           <a
             class="nav-link text-light text-shadow"
             :class="{ textDark: NavActive }"
-            href="#"
-            ><i class="bi bi-cart-fill nav-text"></i>
+            href="#" @click.prevent="openModal()"
+            ><i class="bi bi-cart-fill nav-text position-relative"><span v-if="cartsLength!==0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+    {{cartsLength}}
+    <span class="visually-hidden">unread messages</span>
+  </span></i>
           </a>
         </li>
         <li class="nav-item" v-else>
@@ -54,6 +57,7 @@
             class="nav-link text-light text-shadow"
             :class="{ textDark: NavActive }"
             href="#"
+            @click.prevent="openModal()"
             >ShoppingCart
           </a>
         </li>
@@ -92,8 +96,14 @@
       </ul>
     </div>
   </nav>
+  <CartModal ref="CartModal"></CartModal>
 </template>
 <style lang="scss" scoped>
+.badge{
+  padding: 2px 5px ;
+  font-size: 1px;
+  transform: translate(-50%, 10%) !important;
+}
 .nav-link {
   transition: 1s all;
   &:hover {
@@ -167,6 +177,7 @@
 }
 </style>
 <script>
+import CartModal from "../Userboard/CartModal.vue"
 export default {
   props: {
     HomePage: {
@@ -181,9 +192,11 @@ export default {
       isActive: false,
       NavActive: false,
       windowWidth: window.innerWidth,
+      cartData:{},
+      cartsLength:0,
     };
   },
-  components: {},
+  components: {CartModal},
   methods: {
     openMenu() {
       this.isActive = !this.isActive;
@@ -196,8 +209,24 @@ export default {
         this.NavActive = false;
       }
     },
+        openModal(){
+      const cartComponent = this.$refs.CartModal;
+      cartComponent.showModal();
+    },
+        getCartList(){
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+       this.$http.get(api).then((res) => {
+        console.log(res);
+        if(res.data.success){
+          this.cartData=res.data.data;
+          this.cartsLength = this.cartData.carts.length
+          console.log(this.cartData);
+        }
+      });
+    },
   },
   created() {
+    this.getCartList();
     window.addEventListener("scroll", (event) => {
       this.handleScroll();
       this.$emit("pageScroll", window.scrollY);
