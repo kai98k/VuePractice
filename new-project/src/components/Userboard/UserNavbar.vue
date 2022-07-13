@@ -96,7 +96,7 @@
       </ul>
     </div>
   </nav>
-  <CartModal ref="CartModal"></CartModal>
+  <CartModal ref="CartModal" :carts="cartData" @updateCart="getCartList"></CartModal>
 </template>
 <style lang="scss" scoped>
 .badge{
@@ -213,12 +213,13 @@ export default {
       const cartComponent = this.$refs.CartModal;
       cartComponent.showModal();
     },
-        getCartList(){
+        getCartList(val){
+          console.log(val);
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
        this.$http.get(api).then((res) => {
         console.log(res);
         if(res.data.success){
-          this.cartData=res.data.data;
+          this.cartData=res.data.data
           this.cartsLength = this.cartData.carts.length
           console.log(this.cartData);
         }

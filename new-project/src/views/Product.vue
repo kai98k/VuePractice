@@ -2,7 +2,7 @@
   <Loading :active="isLoading">
     <img src="../assets/image/Infinity-1.6s-200px.gif" />
   </Loading>
-  <UserNavbar></UserNavbar>
+  <UserNavbar ref="navbar"></UserNavbar>
   <div class="bg">
     <div class="container">
       <nav aria-label="breadcrumb" class="">
@@ -12,10 +12,11 @@
           </li>
           <li class="breadcrumb-item">
             <router-link to="/products" class="text-light"
-              >Products</router-link
-            >
+              >Products</router-link>
           </li>
-          <li class="breadcrumb-item active text-dark" aria-current="page">本商品</li>
+          <li class="breadcrumb-item active text-dark" aria-current="page">
+            本商品
+          </li>
         </ol>
       </nav>
       <div class="row main">
@@ -171,7 +172,6 @@ export default {
     UserNavbar,
     Userfoot,
     ToastMessages,
-    
   },
   provide() {
     return {
@@ -185,7 +185,7 @@ export default {
       mainImage: "",
       data: {
         product_id: "",
-        qty: 0,
+        qty: 1,
       },
     };
   },
@@ -201,6 +201,9 @@ export default {
     },
   },
   methods: {
+    updateCart() {
+      this.$refs.navbar.getCartList();
+    },
     putInCartputInCart() {
       this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
@@ -212,9 +215,10 @@ export default {
             style: "success",
             title: "已加入購物車",
           });
+          this.updateCart();
         } else {
           this.isLoading = false;
-             emitter.emit("push-message", {
+          emitter.emit("push-message", {
             style: "danger",
             title: "伺服器忙碌中",
           });
