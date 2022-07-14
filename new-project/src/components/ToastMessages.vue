@@ -18,7 +18,6 @@ export default {
     };
   },
   inject: ["emitter"],
-  
   mounted() {
     this.emitter.on("push-message", (message) => {
       const { style = "success", title, content } = message;

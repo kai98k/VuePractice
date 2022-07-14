@@ -69,9 +69,28 @@
     </div>
     <Userfoot></Userfoot>
   </div>
-  <ToastMessages></ToastMessages>
+  <Alert :class="{isAlert:isAlert}" :alertText="text"></Alert>
 </template>
 <style scoped lang="scss">
+.isAlert{
+  transition: all 1s;
+  display: block !important;
+  animation: alert 2s forwards;
+}
+@keyframes alert {
+    0%{
+      display: none;
+      opacity: 0%;
+    }
+    50%{
+      display:block;
+      opacity: 100%;
+    }
+    100%{
+      display:none;;
+      opacity: 0%;
+    }
+  }
 .PutCart {
   width: 250px;
   margin-bottom: 15px;
@@ -162,24 +181,23 @@ h1 {
 }
 </style>
 <script>
-import emitter from "../methods/emitter"; //https://israynotarray.com/vue/20190510/86469050/ @路徑位置
-import ToastMessages from "@/components/ToastMessages.vue";
+// import emitter from "../methods/emitter"; //https://israynotarray.com/vue/20190510/86469050/ @路徑位置
+// import ToastMessages from "@/components/ToastMessages.vue";
 import UserNavbar from "../components/Userboard/UserNavbar.vue";
 import Userfoot from "../components/Userboard/Userfoot.vue";
+import Alert from "../components/Userboard/Alert.vue"
 
 export default {
   components: {
     UserNavbar,
     Userfoot,
-    ToastMessages,
-  },
-  provide() {
-    return {
-      emitter,
-    };
+    Alert,
+    // ToastMessages,
   },
   data() {
     return {
+      text:"",
+      isAlert:false,
       isLoading: false,
       product: {},
       mainImage: "",
@@ -200,28 +218,37 @@ export default {
       });
     },
   },
-  methods: {
+methods: {
     updateCart() {
       this.$refs.navbar.getCartList();
     },
     putInCartputInCart() {
+      this.text="成功加入購物車";
+      this.isAlert = true;
       this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       this.$http.post(api, { data: this.data }).then((res) => {
         console.log(res);
         if (res.data.success) {
           this.isLoading = false;
-          emitter.emit("push-message", {
-            style: "success",
-            title: "已加入購物車",
-          });
+          // emitter.emit("push-message", {
+          //   style: "success",
+          //   title: "已加入購物車",
+          // });
           this.updateCart();
-        } else {
+          setTimeout(() => {
+              this.isAlert = false;
+              this.text="";
+
+          }, 1500);        
+          } 
+          else {
           this.isLoading = false;
-          emitter.emit("push-message", {
-            style: "danger",
-            title: "伺服器忙碌中",
-          });
+                this.isAlert = false;
+          // emitter.emit("push-message", {
+          //   style: "danger",
+          //   title: "伺服器忙碌中",
+          // });
         }
       });
     },

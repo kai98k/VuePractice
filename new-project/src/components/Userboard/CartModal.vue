@@ -8,6 +8,9 @@
     aria-hidden="true"
     ref="modal"
   >
+   <Loading :active="isLoading">
+    <img src="../../assets/image/Infinity-1.6s-200px.gif" />
+  </Loading>
     <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
       <div class="modal-content border-0">
         <div class="modal-header bg-primary text-white">
@@ -36,7 +39,11 @@
                 <td>{{ cart.product.title }}</td>
                 <td>{{ cart.product.price }}/{{ cart.product.unit }}</td>
                 <td>
+               <div class="spinner-grow" role="status" v-if="cart.id==status.loading">
+  <span class="visually-hidden">Loading...</span>
+</div>
                   <input
+                    :disabled="cart.id==status.loading"
                     type="number"
                     v-model="cart.qty"
                     class="form-control"
@@ -44,7 +51,11 @@
                     @change="updateCart(cart)"
                   />
                 </td>
-                <td><button type="button" class="btn delete"><i class="bi bi-x-lg text-danger"></i></button></td>
+                <td>
+                  <button type="button" class="btn delete" @click="deleteCart(cart)">
+                    <i class="bi bi-x-lg text-danger"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -63,11 +74,15 @@
   </div>
 </template>
 <style scoped lang="scss">
-.delete{
+.spinner-grow{
+  margin-right: 5px;
+  vertical-align: middle !important;
+}
+.delete {
   cursor: pointer;
-  &:hover{
+  &:hover {
     transition: all 1.5s;
-    transform:rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 .modal-footer {
@@ -107,10 +122,15 @@ td {
   }
 }
 </style>
-<script>
+<script>    
 import Modal from "bootstrap/js/dist/modal";
 
+
+
+
 export default {
+  components:{
+  },
   props: {
     carts: {
       type: Object,
@@ -126,14 +146,29 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       modal: {},
       cartData: {},
+      status:{
+        loading:"",
+      }
       // 變數拿來裝 ref 取到 modal DOM
     };
   },
   methods: {
+    deleteCart(item) {
+      this.isLoading=true;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
+      this.$http.delete(api)
+        .then((res) => {
+          console.log("res", res);
+        })
+          this.$emit("updateCart", "delete");
+          this.isLoading=false;
+    },
     updateCart(item) {
       console.log(item);
+      this.status.loading = item.id
       let data = {
         product_id: item.id,
         qty: item.qty,
@@ -143,7 +178,8 @@ export default {
         console.log("res", res);
         if (res.data.success) {
           console.log("data", res.data);
-          this.$emit("updateCart", "no");
+          this.$emit("updateCart", "update");
+          this.status.loading="";
         }
       });
     },

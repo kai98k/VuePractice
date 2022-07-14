@@ -45,11 +45,25 @@
           <a
             class="nav-link text-light text-shadow"
             :class="{ textDark: NavActive }"
-            href="#" @click.prevent="openModal()"
-            ><i class="bi bi-cart-fill nav-text position-relative"><span v-if="cartsLength!==0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-    {{cartsLength}}
-    <span class="visually-hidden">unread messages</span>
-  </span></i>
+            href="#"
+            @click.prevent="openModal()"
+            ><i class="bi bi-cart-fill nav-text position-relative"
+              ><span
+                v-if="cartsLength !== 0"
+                class="
+                  position-absolute
+                  top-0
+                  start-100
+                  translate-middle
+                  badge
+                  rounded-pill
+                  bg-secondary
+                "
+              >
+                {{ cartsLength }}
+                <span class="visually-hidden">unread messages</span>
+              </span></i
+            >
           </a>
         </li>
         <li class="nav-item" v-else>
@@ -96,11 +110,16 @@
       </ul>
     </div>
   </nav>
-  <CartModal ref="CartModal" :carts="cartData" @updateCart="getCartList"></CartModal>
+  <Alert :class="{ isAlert: isAlert }" :alertText="text"></Alert>
+  <CartModal
+    ref="CartModal"
+    :carts="cartData"
+    @updateCart="getCartList"
+  ></CartModal>
 </template>
 <style lang="scss" scoped>
-.badge{
-  padding: 2px 5px ;
+.badge {
+  padding: 2px 5px;
   font-size: 1px;
   transform: translate(-50%, 10%) !important;
 }
@@ -129,8 +148,8 @@
 }
 @media (max-width: 986px) {
   .text-shadow {
-  text-shadow: 1px 2px 1px black;
-}
+    text-shadow: 1px 2px 1px black;
+  }
   .navbar-nav {
     position: absolute;
     top: 0%;
@@ -175,9 +194,29 @@
   text-shadow: none !important;
   font-weight: 900;
 }
+.isAlert {
+  transition: all 1s;
+  display: block !important;
+  animation: alert 2s forwards;
+}
+@keyframes alert {
+  0% {
+    display: none;
+    opacity: 0%;
+  }
+  50% {
+    display: block;
+    opacity: 100%;
+  }
+  100% {
+    display: none;
+    opacity: 0%;
+  }
+}
 </style>
 <script>
-import CartModal from "../Userboard/CartModal.vue"
+import Alert from "../Userboard/Alert.vue";
+import CartModal from "../Userboard/CartModal.vue";
 export default {
   props: {
     HomePage: {
@@ -189,14 +228,16 @@ export default {
   },
   data() {
     return {
+      isAlert: false,
+      text: "",
       isActive: false,
       NavActive: false,
       windowWidth: window.innerWidth,
-      cartData:{},
-      cartsLength:0,
+      cartData: {},
+      cartsLength: 0,
     };
   },
-  components: {CartModal},
+  components: { CartModal, Alert },
   methods: {
     openMenu() {
       this.isActive = !this.isActive;
@@ -209,19 +250,31 @@ export default {
         this.NavActive = false;
       }
     },
-        openModal(){
+    openModal() {
       const cartComponent = this.$refs.CartModal;
       cartComponent.showModal();
     },
-        getCartList(val){
-          console.log(val);
+    getCartList(text) {
+      console.log(text);
+      if (text == "delete") {
+        this.text = "已成功刪除商品";
+        this.isAlert = true;
+      }
+      if (text == "update") {
+        this.text = "已成功更改商品數量";
+        this.isAlert = true;
+      }
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
-       this.$http.get(api).then((res) => {
+      this.$http.get(api).then((res) => {
         console.log(res);
-        if(res.data.success){
-          this.cartData=res.data.data
-          this.cartsLength = this.cartData.carts.length
+        if (res.data.success) {
+          this.cartData = res.data.data;
+          this.cartsLength = this.cartData.carts.length;
           console.log(this.cartData);
+          setTimeout(() => {
+            this.isAlert = false;
+            this.text = "";
+          }, 1500);
         }
       });
     },
