@@ -266,7 +266,7 @@ export default {
       }
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       this.$http.get(api).then((res) => {
-        console.log(res);
+        console.log("getCart",res);
         if (res.data.success) {
           this.cartData = res.data.data;
           this.cartsLength = this.cartData.carts.length;

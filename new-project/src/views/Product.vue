@@ -225,12 +225,10 @@ methods: {
     putInCartputInCart() {
       this.text="成功加入購物車";
       this.isAlert = true;
-      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       this.$http.post(api, { data: this.data }).then((res) => {
         console.log(res);
         if (res.data.success) {
-          this.isLoading = false;
           // emitter.emit("push-message", {
           //   style: "success",
           //   title: "已加入購物車",
@@ -243,7 +241,6 @@ methods: {
           }, 1500);        
           } 
           else {
-          this.isLoading = false;
                 this.isAlert = false;
           // emitter.emit("push-message", {
           //   style: "danger",

@@ -8,9 +8,9 @@
     aria-hidden="true"
     ref="modal"
   >
-   <Loading :active="isLoading">
-    <img src="../../assets/image/Infinity-1.6s-200px.gif" />
-  </Loading>
+    <Loading :active="isLoading">
+      <img src="../../assets/image/Infinity-1.6s-200px.gif" />
+    </Loading>
     <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
       <div class="modal-content border-0">
         <div class="modal-header bg-primary text-white">
@@ -23,7 +23,10 @@
           ></button>
         </div>
         <div class="modal-body">
-          <table class="table table-hover">
+          <h5 v-if="cartLength == 0" class="text-center py-5">
+            目前沒有商品，趕快去購物吧~
+          </h5>
+          <table v-else class="table table-hover">
             <thead>
               <tr>
                 <th scope="col text-center">商品圖片</th>
@@ -39,11 +42,15 @@
                 <td>{{ cart.product.title }}</td>
                 <td>{{ cart.product.price }}/{{ cart.product.unit }}</td>
                 <td>
-               <div class="spinner-grow" role="status" v-if="cart.id==status.loading">
-  <span class="visually-hidden">Loading...</span>
-</div>
+                  <div
+                    class="spinner-grow"
+                    role="status"
+                    v-if="cart.id == status.loading"
+                  >
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                   <input
-                    :disabled="cart.id==status.loading"
+                    :disabled="cart.id == status.loading"
                     type="number"
                     v-model="cart.qty"
                     class="form-control"
@@ -52,7 +59,11 @@
                   />
                 </td>
                 <td>
-                  <button type="button" class="btn delete" @click="deleteCart(cart)">
+                  <button
+                    type="button"
+                    class="btn delete"
+                    @click="deleteCart(cart)"
+                  >
                     <i class="bi bi-x-lg text-danger"></i>
                   </button>
                 </td>
@@ -60,13 +71,24 @@
             </tbody>
           </table>
         </div>
-        <div class="modal-footer">
-          <div class="text-end h5">總計金額: {{ cartData.final_total }}</div>
+        <div class="modal-footer" v-if="cartLength>0">
           <div>
-            <button type="button" class="btn btn-danger me-3">
+            <button class="btn btn-outline-dark" type="button" @click="useCoupon">套用優惠</button>
+            <input id="coupon" class="form-control ms-3" type="text" placeholder="輸入優惠券"  v-model="code" style="width:200px"/>
+            <span class="ms-3 text-danger" v-if="!couponFound">*無此優惠券</span>
+            <h5 class="mt-3">總計金額 : {{ cartData.total }} 元</h5>
+            <h5>優惠金額 : {{Math.round(cartData.final_total)}} 元</h5>
+
+          </div>
+          <div>
+            <button
+              type="button"
+              class="btn btn-danger me-3"
+              @click="deleteAllCarts"
+            >
               清空購物車
             </button>
-            <button type="button" class="btn btn-primary">前往下單</button>
+            <router-link to="/userorder" class="btn btn-primary" @click="hideModal">前往下單</router-link>
           </div>
         </div>
       </div>
@@ -74,7 +96,7 @@
   </div>
 </template>
 <style scoped lang="scss">
-.spinner-grow{
+.spinner-grow {
   margin-right: 5px;
   vertical-align: middle !important;
 }
@@ -122,15 +144,11 @@ td {
   }
 }
 </style>
-<script>    
+<script>
 import Modal from "bootstrap/js/dist/modal";
 
-
-
-
 export default {
-  components:{
-  },
+  components: {},
   props: {
     carts: {
       type: Object,
@@ -142,33 +160,57 @@ export default {
   watch: {
     carts() {
       this.cartData = this.carts;
+      this.cartLength = this.cartData.carts.length;
     },
   },
   data() {
     return {
+      couponFound:true,
+      code:"",
+      cartLength: 0,
       isLoading: false,
       modal: {},
       cartData: {},
-      status:{
-        loading:"",
-      }
+      status: {
+        loading: "",
+      },
       // 變數拿來裝 ref 取到 modal DOM
     };
   },
   methods: {
-    deleteCart(item) {
-      this.isLoading=true;
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
-      this.$http.delete(api)
+    useCoupon(){
+       let data = {
+         code:this.code,
+       }
+       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/coupon`;
+       this.$http.post(api,{data})
         .then((res) => {
-          console.log("res", res);
+          this.couponFound = res.data.success;
+          this.cartData.final_total = res.data.data.final_total;
+          console.log("coupon",res);
         })
-          this.$emit("updateCart", "delete");
-          this.isLoading=false;
+    },
+    deleteAllCarts() {
+      this.isLoading = true;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/carts`;
+      this.$http.delete(api).then((res) => {
+        console.log("res", res);
+        this.$emit("updateCart", "delete");
+      });
+      this.isLoading = false;
+    },
+    deleteCart(item) {
+      this.isLoading = true;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
+      this.$http.delete(api).then((res) => {
+        console.log("res", res);
+        this.$emit("updateCart", "delete");
+      });
+      this.isLoading = false;
     },
     updateCart(item) {
       console.log(item);
-      this.status.loading = item.id
+      this.status.loading = item.id;
       let data = {
         product_id: item.id,
         qty: item.qty,
@@ -179,7 +221,7 @@ export default {
         if (res.data.success) {
           console.log("data", res.data);
           this.$emit("updateCart", "update");
-          this.status.loading="";
+          this.status.loading = "";
         }
       });
     },
